@@ -1,0 +1,91 @@
+.register-background {
+	background: rgba(0, 0, 0, 0.4);
+	width: 100vw;
+	height: 100vh;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	overflow: hidden;
+}
+
+.register-container {
+	background: #283a4d;
+	width: 40vw;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	height: 50vh;
+	border-radius: 2rem;
+	font-size: 1.8rem;
+	color: white;
+	animation: form-slide 1s ease-in-out;
+}
+
+@keyframes form-slide {
+	from {
+		transform: translateY(-50%);
+		opacity: 0;
+		transform: translate(-50%, -90%);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateY(0px);
+		transform: translate(-50%, -50%);
+	}
+}
+
+.exit {
+	margin-top: 2rem;
+	margin-left: 2rem;
+}
+
+.form {
+	display: flex;
+
+	width: 100%;
+}
+
+.form-email {
+	margin-top: 3rem;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+.form-container {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.form-email input {
+	padding: 2rem;
+	width: 60%;
+	margin-bottom: 1rem;
+	border: none;
+	border-radius: 1rem;
+}
+
+.form-email input:focus {
+	outline: none;
+}
+
+.form-container button {
+	width: 170px;
+	border: none;
+	padding: 2rem;
+	margin-top: 2rem;
+	border-radius: 3rem;
+	cursor: pointer;
+}
+
+.form-container button:hover {
+	background: #b0b9c0;
+	transition: all 0.2s ease-in;
+}

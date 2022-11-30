@@ -1,129 +1,174 @@
 .container {
-  padding: 0 2rem;
+	width: 70vw;
+	margin: auto;
+	position: relative;
 }
 
 .main {
-  min-height: 100vh;
-  padding: 4rem 0;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+	min-height: 100vh;
+	padding-top: 2rem;
+
+	display: flex;
 }
 
-.footer {
-  display: flex;
-  flex: 1;
-  padding: 2rem 0;
-  border-top: 1px solid #eaeaea;
-  justify-content: center;
-  align-items: center;
+.navbar {
+	flex: 0.5;
 }
 
-.footer a {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-grow: 1;
+.middle {
+	flex: 1.5;
+	border-left: 0.1px solid #2d4153;
+	border-right: 0.1px solid #2d4153;
+	border-top: 0.1px solid #2d4153;
 }
 
-.title a {
-  color: #0070f3;
-  text-decoration: none;
+.signup {
+	flex: 1;
 }
 
-.title a:hover,
-.title a:focus,
-.title a:active {
-  text-decoration: underline;
+.nav {
+	margin-top: 4rem;
 }
 
-.title {
-  margin: 0;
-  line-height: 1.15;
-  font-size: 4rem;
+.nav ul {
+	list-style: none;
+	padding: 0;
 }
 
-.title,
-.description {
-  text-align: center;
+.navlinks {
+	display: flex;
+	align-items: center;
+	font-size: 1.9rem;
+	font-weight: 500;
+	color: white;
+	margin-bottom: 2rem;
+	width: fit-content;
+	padding: 1rem 0.5rem;
 }
 
-.description {
-  margin: 4rem 0;
-  line-height: 1.5;
-  font-size: 1.5rem;
+.navlinks:hover {
+	background: #283a4d;
+	border-radius: 0.5rem;
 }
 
-.code {
-  background: #fafafa;
-  border-radius: 5px;
-  padding: 0.75rem;
-  font-size: 1.1rem;
-  font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-    Bitstream Vera Sans Mono, Courier New, monospace;
+.navlinks img {
+	margin-right: 2rem;
 }
 
-.grid {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  max-width: 800px;
+/* Second part*/
+.input {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-bottom: 2px solid #395066;
+	padding: 1rem;
 }
 
-.card {
-  margin: 1rem;
-  padding: 1.5rem;
-  text-align: left;
-  color: inherit;
-  text-decoration: none;
-  border: 1px solid #eaeaea;
-  border-radius: 10px;
-  transition: color 0.15s ease, border-color 0.15s ease;
-  max-width: 300px;
+.input input {
+	width: 65%;
+	padding: 1rem;
+	border-radius: 2rem;
+	margin-top: 0.2rem;
+	font-size: 1.3rem;
+	background: rgb(240, 236, 236);
+	color: gray;
 }
 
-.card:hover,
-.card:focus,
-.card:active {
-  color: #0070f3;
-  border-color: #0070f3;
+.input input:focus {
+	outline: none;
+	border: 2px solid;
+	border-color: #a9cff8;
 }
 
-.card h2 {
-  margin: 0 0 1rem 0;
-  font-size: 1.5rem;
+.imageContainer {
+	position: relative;
+	height: 40vh;
 }
 
-.card p {
-  margin: 0;
-  font-size: 1.25rem;
-  line-height: 1.5;
+.text {
+	display: flex;
+	position: absolute;
+	font-size: 1.9rem;
+	color: white;
+	font-weight: bold;
+	bottom: 0;
+	flex-direction: column;
+	left: 12px;
 }
 
-.logo {
-  height: 1em;
-  margin-left: 0.5rem;
+.trendList {
+	color: white;
+	font-size: 1.9rem;
+	margin-left: 1.5rem;
 }
 
-@media (max-width: 600px) {
-  .grid {
-    width: 100%;
-    flex-direction: column;
-  }
+.trends {
+	display: flex;
+	flex-direction: column;
 }
 
-@media (prefers-color-scheme: dark) {
-  .card,
-  .footer {
-    border-color: #222;
-  }
-  .code {
-    background: #111;
-  }
-  .logo img {
-    filter: invert(1);
-  }
+.trend {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 2rem;
+	padding: 0.5rem 0;
+}
+
+.trend:hover {
+	background: #283a4d;
+}
+
+.trend span {
+	font-size: 1.2rem !important;
+	color: rgb(218, 214, 214);
+}
+
+.middleSpan {
+	font-weight: bold;
+	color: white !important;
+}
+
+.btn {
+	color: #6fa4f3;
+	padding: 1rem 0rem;
+}
+
+.btn:hover {
+	background: #283a4d;
+}
+
+/* Third Part */
+
+.signup {
+	font-size: 1.9rem;
+	color: white;
+}
+
+.signup-container {
+	background: #283a4d;
+	margin: 2rem;
+	border-radius: 2rem;
+	padding: 2rem;
+}
+
+.signup-btn {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin-top: 6rem;
+}
+
+.signup-btn button {
+	padding: 1.5rem;
+	width: 70%;
+	border: none;
+	margin: 0.5rem;
+	border-radius: 1rem;
+	cursor: pointer;
+	font-weight: 600;
+}
+
+.signup-btn button:hover {
+	background: #cbced1;
 }
