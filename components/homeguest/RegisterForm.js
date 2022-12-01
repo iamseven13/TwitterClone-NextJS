@@ -1,17 +1,25 @@
 import styles from './RegisterForm.module.css';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
+
+import { signIn } from 'next-auth/react';
 
 export default function RegisterForm(props) {
 	const emailInputRef = useRef();
 	const passwordInputRef = useRef();
 	const passwordInputRef2 = useRef();
 
-	async function registerUserHandler(e) {
+	const [isLogin, setIsLogin] = useState(false);
+
+	async function handleRegister(e) {
 		e.preventDefault();
 
 		const enteredEmail = emailInputRef.current.value;
 		const enteredPassword = passwordInputRef.current.value;
 		const enteredPassword2 = passwordInputRef2.current.value;
+
+		if (enteredPassword !== enteredPassword2) {
+			return res.json({ msg: 'password should match' });
+		}
 
 		const clientData = {
 			email: enteredEmail,
@@ -20,7 +28,7 @@ export default function RegisterForm(props) {
 		};
 
 		try {
-			const res = await fetch('/api/register/register', {
+			const res = await fetch('/api/auth/signup', {
 				method: 'POST',
 				body: JSON.stringify(clientData),
 				headers: { 'Content-type': 'application/json' },
@@ -29,6 +37,26 @@ export default function RegisterForm(props) {
 			console.log(data);
 		} catch (e) {
 			console.log(e.message);
+		}
+	}
+
+	async function handleLogin(e) {
+		e.preventDefault();
+
+		const enteredEmail = emailInputRef.current.value;
+		const enteredPassword = passwordInputRef.current.value;
+
+		if (isLogin) {
+			// log in user
+			const result = await signIn('credentials', {
+				redirect: false,
+				email: enteredEmail,
+				password: enteredPassword,
+			});
+			console.log(result);
+			if (!result.error) {
+				handleExitForm(e);
+			}
 		}
 	}
 
@@ -48,7 +76,7 @@ export default function RegisterForm(props) {
 				<div className={styles['form']}>
 					<form
 						className={styles['form-container']}
-						onSubmit={registerUserHandler}
+						onSubmit={isLogin ? handleLogin : handleRegister}
 					>
 						<div className={styles['form-email']}>
 							<input
@@ -70,17 +98,27 @@ export default function RegisterForm(props) {
 								ref={passwordInputRef}
 							/>
 						</div>
-						<div className={styles['form-email']}>
-							<input
-								type="password"
-								id="retype"
-								name="retype"
-								placeholder="Retype password"
-								required
-								ref={passwordInputRef2}
-							/>
-						</div>
-						<button type="submit">Register</button>
+						{!isLogin ? (
+							<div className={styles['form-email']}>
+								<input
+									type="password"
+									id="retype"
+									name="retype"
+									placeholder="Retype password"
+									required
+									ref={passwordInputRef2}
+								/>
+							</div>
+						) : (
+							''
+						)}
+						<a
+							onClick={() => setIsLogin((prev) => !prev)}
+							className={styles.login}
+						>
+							{isLogin ? 'or Register' : 'or Login'}
+						</a>
+						<button type="submit">{!isLogin ? 'Register' : 'Login'}</button>
 					</form>
 				</div>
 			</div>
