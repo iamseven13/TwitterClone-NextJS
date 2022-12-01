@@ -3,13 +3,27 @@ import Head from 'next/head';
 import RegisterForm from '../components/homeguest/RegisterForm';
 import styles from '../styles/Home.module.css';
 
-import { useState } from 'react';
+import { useSession, getSession } from 'next-auth/react';
+
+import { useEffect, useState } from 'react';
 import ThirdPart from '../components/homeguest/ThirdPart';
 import MiddlePart from '../components/homeguest/MiddlePart';
 import SideBar from '../components/homeguest/SideBar';
 
 export default function Home(props) {
 	const [showRegisterForm, setRegisterForm] = useState(false);
+
+	const { data: session, status, loading } = useSession();
+
+	useEffect(() => {
+		getSession().then((session) => {
+			if (!session) {
+			} else {
+				window.location.href = '/home';
+			}
+		});
+	}, []);
+
 	return (
 		<div className={styles.container}>
 			<Head>

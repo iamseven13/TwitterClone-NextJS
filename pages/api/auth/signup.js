@@ -4,9 +4,11 @@ import connectToDB from '../../../lib/db';
 async function handler(req, res) {
 	const data = req.body;
 
-	const { email, password, password2 } = data;
+	const { name, surname, avatar, email, password, password2 } = data;
 
 	if (
+		!name ||
+		!surname ||
 		!email ||
 		!email.includes('@') ||
 		!password ||
@@ -33,6 +35,9 @@ async function handler(req, res) {
 	const encryptedPass = await hashPassword(password);
 
 	const result = await db.collection('users').insertOne({
+		name,
+		surname,
+		avatar,
 		email,
 		encryptedPass,
 	});

@@ -4,6 +4,8 @@ import { useRef, useState } from 'react';
 import { signIn } from 'next-auth/react';
 
 export default function RegisterForm(props) {
+	const nameInputRef = useRef();
+	const surnameInputRef = useRef();
 	const emailInputRef = useRef();
 	const passwordInputRef = useRef();
 	const passwordInputRef2 = useRef();
@@ -13,16 +15,22 @@ export default function RegisterForm(props) {
 	async function handleRegister(e) {
 		e.preventDefault();
 
+		const enteredName = nameInputRef.current.value;
+		const enteredSurname = surnameInputRef.current.value;
 		const enteredEmail = emailInputRef.current.value;
 		const enteredPassword = passwordInputRef.current.value;
 		const enteredPassword2 = passwordInputRef2.current.value;
+		const userAvatar = 'https://api.lorem.space/image/shoes?w=150&h=150';
 
 		if (enteredPassword !== enteredPassword2) {
 			return res.json({ msg: 'password should match' });
 		}
 
 		const clientData = {
+			name: enteredName,
+			surname: enteredSurname,
 			email: enteredEmail,
+			avatar: userAvatar,
 			password: enteredPassword,
 			password2: enteredPassword2,
 		};
@@ -53,9 +61,10 @@ export default function RegisterForm(props) {
 				email: enteredEmail,
 				password: enteredPassword,
 			});
-			console.log(result);
+
 			if (!result.error) {
 				handleExitForm(e);
+				window.location.href = `${window.location.origin}/home`;
 			}
 		}
 	}
@@ -78,6 +87,32 @@ export default function RegisterForm(props) {
 						className={styles['form-container']}
 						onSubmit={isLogin ? handleLogin : handleRegister}
 					>
+						{!isLogin ? (
+							<>
+								<div className={styles['form-email']}>
+									<input
+										type="name"
+										id="name"
+										name="name"
+										placeholder="Name"
+										required
+										ref={nameInputRef}
+									/>
+								</div>
+								<div className={styles['form-email']}>
+									<input
+										type="name"
+										id="surname"
+										name="surname"
+										placeholder="Surname"
+										required
+										ref={surnameInputRef}
+									/>
+								</div>
+							</>
+						) : (
+							''
+						)}
 						<div className={styles['form-email']}>
 							<input
 								type="email"
@@ -125,3 +160,5 @@ export default function RegisterForm(props) {
 		</div>
 	);
 }
+
+export async function getStaticProps() {}

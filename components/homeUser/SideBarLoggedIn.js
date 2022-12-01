@@ -1,4 +1,11 @@
+import { useSession, signOut } from 'next-auth/react';
+
 export default function SideBarLoggedIn({ styles }) {
+	const { data: session, status } = useSession();
+	function handleLogout() {
+		signOut();
+		console.log(session);
+	}
 	return (
 		<div className={styles.navbar}>
 			<a href="/" className={styles.logo}>
@@ -7,9 +14,9 @@ export default function SideBarLoggedIn({ styles }) {
 			<nav className={styles.nav}>
 				<ul>
 					<li>
-						<a className={styles.navlinks} href="/explore">
+						<a className={styles.navlinks} href="/home">
 							{' '}
-							<img src="/images/settings.svg" alt="" />
+							<img src="/images/home.svg" alt="" />
 							Home
 						</a>
 					</li>
@@ -25,48 +32,50 @@ export default function SideBarLoggedIn({ styles }) {
 					<li>
 						<a className={styles.navlinks} href="/explore">
 							{' '}
-							<img src="/images/settings.svg" alt="" />
+							<img src="/images/bell.svg" alt="" />
 							Notifications
 						</a>
 					</li>
 					<li>
 						<a className={styles.navlinks} href="/explore">
 							{' '}
-							<img src="/images/settings.svg" alt="" />
+							<img src="/images/message.svg" alt="" />
 							Messages
 						</a>
 					</li>
 					<li>
 						<a className={styles.navlinks} href="/explore">
 							{' '}
-							<img src="/images/settings.svg" alt="" />
+							<img src="/images/bookmark.svg" alt="" />
 							Bookmarks
 						</a>
 					</li>
 					<li>
 						<a className={styles.navlinks} href="/explore">
 							{' '}
-							<img src="/images/settings.svg" alt="" />
+							<img src="/images/list.svg" alt="" />
 							Lists
 						</a>
 					</li>
 					<li>
-						<a className={styles.navlinks} href="/explore">
+						<a className={styles.navlinks} href="/profile">
 							{' '}
-							<img src="/images/settings.svg" alt="" />
+							<img src="/images/user.svg" alt="" />
 							Profile
 						</a>
 					</li>
 					<li>
 						<a className={styles.navlinks} href="/explore">
 							{' '}
-							<img src="/images/settings.svg" alt="" />
+							<img src="/images/more.svg" alt="" />
 							More
 						</a>
 					</li>
 				</ul>
 			</nav>
-			<button>Tweet</button>
+			<button className={styles['sidebar-btn-logout']} onClick={handleLogout}>
+				Logout
+			</button>
 		</div>
 	);
 }

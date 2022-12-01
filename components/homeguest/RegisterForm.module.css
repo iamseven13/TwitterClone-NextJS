@@ -16,7 +16,7 @@
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	height: 50vh;
+	height: 70vh;
 	border-radius: 2rem;
 	font-size: 1.8rem;
 	color: white;
@@ -65,7 +65,7 @@
 }
 
 .form-email input {
-	padding: 2rem;
+	padding: 1.5rem;
 	width: 60%;
 	margin-bottom: 1rem;
 	border: none;

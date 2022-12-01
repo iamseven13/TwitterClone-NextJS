@@ -38,12 +38,12 @@
 .navlinks {
 	display: flex;
 	align-items: center;
-	font-size: 1.9rem;
+	font-size: 1.6rem;
 	font-weight: 500;
 	color: white;
 	margin-bottom: 2rem;
-	width: fit-content;
-	padding: 1rem 0.5rem;
+	width: 100%;
+	padding: 0.5rem 0.5rem;
 }
 
 .navlinks:hover {
@@ -171,4 +171,91 @@
 
 .signup-btn button:hover {
 	background: #cbced1;
+}
+
+/* Logged In Homepage*/
+
+.sidebar-btn-logout {
+	border: none;
+	padding: 2rem 6rem;
+	border-radius: 3rem;
+	cursor: pointer;
+	background: #1d9bf0;
+	color: white;
+}
+
+.sidebar-btn-logout:hover {
+	background: #45aff5;
+}
+
+.right-tabs {
+	background: #283a4d;
+	margin: 2rem;
+	border-radius: 2rem;
+	padding: 2rem;
+	font-size: 1.9rem;
+	color: white;
+}
+
+.trendList-m0 {
+	margin-left: 0rem !important;
+}
+
+.who-toFollow {
+	background: #283a4d;
+	margin: 2rem;
+	border-radius: 2rem;
+	padding: 2rem;
+	font-size: 1.9rem;
+	color: white;
+}
+
+.users {
+	display: flex;
+	justify-content: space-between;
+	flex-direction: column;
+}
+
+.who-toFollow-pics {
+	border-radius: 2rem;
+	object-fit: cover;
+}
+
+.user {
+	display: flex;
+	align-items: center;
+	padding: 2rem;
+	justify-content: space-between;
+}
+
+.user-info {
+	display: flex;
+	flex-direction: column;
+	margin-left: 1rem;
+	width: max-content;
+}
+
+.user span {
+	font-size: 1.5rem;
+	margin-right: rem;
+}
+
+.user button {
+	border: none;
+	padding: 1rem 2rem;
+	border-radius: 3rem;
+	cursor: pointer;
+	background: #ffffff;
+	color: rgb(0, 0, 0);
+	font-weight: 600;
+	align-self: right;
+	transition: all 0.3s ease-in-out;
+}
+
+.user button:hover {
+	background: #b8b6b6;
+}
+
+.user-firstPart {
+	display: flex;
 }
