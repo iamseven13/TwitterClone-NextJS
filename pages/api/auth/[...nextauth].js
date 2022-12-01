@@ -59,4 +59,5 @@ export default NextAuth({
 			return { ...token, ...user };
 		},
 	},
+	secret: process.env.NEXT_PUBLIC_SECRET,
 });
