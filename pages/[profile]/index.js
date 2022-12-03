@@ -1,5 +1,5 @@
 import { useSession } from 'next-auth/react';
-
+import { server } from '../../config/index';
 import SideBarLoggedIn from '../../components/homeUser/SideBarLoggedIn';
 import ThirdPartLoggedIn from '../../components/homeUser/ThirdPartLoggedIn';
 import ProfileUser from '../../components/homeUser/ProfileUser/ProfileUser';
@@ -32,7 +32,7 @@ export async function getServerSideProps(context) {
 
 	console.log(params.profile);
 
-	const res = await fetch('http://localhost:3000/api/profile/ProfileData', {
+	const res = await fetch(`${server}/api/profile/ProfileData`, {
 		method: 'POST',
 		body: params.profile,
 		'Content-Type': 'application/json',
