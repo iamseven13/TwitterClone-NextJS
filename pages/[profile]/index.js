@@ -32,11 +32,14 @@ export async function getServerSideProps(context) {
 
 	console.log(params.profile);
 
-	const res = await fetch(`${server}/api/profile/ProfileData`, {
-		method: 'POST',
-		body: params.profile,
-		'Content-Type': 'application/json',
-	});
+	const res = await fetch(
+		'https://twitter-clone-next-fukx29jxc-iamseven13.vercel.app/api/profile/ProfileData',
+		{
+			method: 'POST',
+			body: params.profile,
+			'Content-Type': 'application/json',
+		}
+	);
 	const data = await res.json();
 	if (data.error) {
 		return {
