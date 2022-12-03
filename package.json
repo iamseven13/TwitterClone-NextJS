@@ -12,6 +12,7 @@
 	"dependencies": {
 		"@next/font": "^13.0.5",
 		"bcryptjs": "^2.4.3",
+		"gravatar": "^1.8.2",
 		"mongodb": "^4.12.1",
 		"next": "13.0.5",
 		"next-auth": "^4.17.0",

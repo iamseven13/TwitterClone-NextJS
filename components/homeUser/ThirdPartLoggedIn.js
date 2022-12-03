@@ -40,7 +40,7 @@ export default function ThirdPartLoggedIn({ styles }) {
 					<div className={styles.user}>
 						<div className={styles['user-firstPart']}>
 							<Image
-								src="https://api.lorem.space/image/movie?w=150&h=220"
+								src=""
 								alt=""
 								width={40}
 								height={40}
@@ -59,7 +59,7 @@ export default function ThirdPartLoggedIn({ styles }) {
 					<div className={styles.user}>
 						<div className={styles['user-firstPart']}>
 							<Image
-								src="https://api.lorem.space/image/book?w=150&h=220"
+								src=""
 								alt=""
 								width={40}
 								height={40}

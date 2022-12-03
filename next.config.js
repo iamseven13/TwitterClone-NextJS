@@ -5,6 +5,12 @@ const nextConfig = {
 		remotePatterns: [
 			{
 				protocol: 'https',
+				hostname: '**.unsplash.com',
+				port: '',
+				pathname: '/**',
+			},
+			{
+				protocol: 'https',
 				hostname: 'api.lorem.space',
 				port: '',
 				pathname: '/image/**',

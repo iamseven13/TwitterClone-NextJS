@@ -1,10 +1,22 @@
 import Image from 'next/image';
-
+import { useSession } from 'next-auth/react';
 import styles from './MiddlePartLoggedIn.module.css';
 
 import Tweets from './Tweets';
+import { useEffect, useState } from 'react';
 export default function MiddlePartLoggedIn({ tweets }) {
-	console.log(tweets);
+	const [avatarPic, setAvatarPic] = useState(
+		'https://images.unsplash.com/photo-1534294668821-28a3054f4256?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1471&q=80'
+	);
+
+	const { data: session, status, loading } = useSession();
+
+	useEffect(() => {
+		if (session) {
+			setAvatarPic(session.token.avatar);
+		}
+	}, []);
+
 	return (
 		<div className={styles.middle}>
 			<div className={styles['top-header']}>
@@ -13,7 +25,7 @@ export default function MiddlePartLoggedIn({ tweets }) {
 			</div>
 			<div className={styles['image-textarea']}>
 				<Image
-					src="https://api.lorem.space/image/book?w=150&h=220"
+					src={avatarPic}
 					alt=""
 					width={35}
 					height={35}

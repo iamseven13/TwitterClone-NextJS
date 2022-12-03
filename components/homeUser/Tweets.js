@@ -11,7 +11,7 @@ export default function Tweets({ tweets }) {
 				<div className={styles['user-tweet']}>
 					<a href="">
 						<Image
-							src="https://api.lorem.space/image/book?w=150&h=220"
+							src=""
 							alt=""
 							width={35}
 							height={35}
