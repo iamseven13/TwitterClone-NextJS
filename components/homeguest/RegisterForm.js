@@ -117,7 +117,7 @@ export default function RegisterForm(props) {
 							<input
 								type="email"
 								id="femail"
-								name="femail"
+								name="email"
 								placeholder="Email"
 								required
 								ref={emailInputRef}
@@ -127,7 +127,7 @@ export default function RegisterForm(props) {
 							<input
 								type="password"
 								id="fpassword"
-								name="fpassword"
+								name="password"
 								placeholder="Password"
 								required
 								ref={passwordInputRef}
@@ -138,7 +138,7 @@ export default function RegisterForm(props) {
 								<input
 									type="password"
 									id="retype"
-									name="retype"
+									name="password2"
 									placeholder="Retype password"
 									required
 									ref={passwordInputRef2}

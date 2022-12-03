@@ -1,0 +1,63 @@
+.tweets {
+	margin-top: 1rem;
+
+	min-height: 14vh;
+}
+
+.image-textarea-user {
+	margin-left: 1.5rem;
+	border-radius: 50%;
+	background-size: cover;
+	object-fit: cover;
+}
+
+.user-tweet {
+	display: flex;
+	color: white;
+	font-size: 1.5rem;
+	margin-bottom: 2rem;
+	border-bottom: 0.1px solid #2d4153;
+}
+
+.name-username {
+	display: flex;
+	margin-left: 1rem;
+}
+
+.fullname {
+	font-weight: 500;
+}
+
+.username {
+	color: gray;
+	margin-left: 0.5rem;
+}
+
+.user-info {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	width: 100%;
+}
+
+.tweet-info {
+	margin-left: 1rem;
+}
+.tweet-info p {
+	margin: 0;
+	margin-top: 0.3rem;
+}
+
+.icons {
+	display: flex;
+	justify-content: space-between;
+	margin-left: 1rem;
+	width: 80%;
+	margin-top: 1.4rem;
+}
+
+.icons img {
+	width: 16px;
+	height: 16px;
+	margin-right: 1rem;
+}

@@ -1,0 +1,191 @@
+.profile-container {
+	flex: 1.2;
+	max-width: 33vw;
+	border-left: 0.1px solid #2d4153;
+	border-right: 0.1px solid #2d4153;
+}
+
+.profile-header {
+	display: flex;
+	color: #e7e9ea;
+	margin-left: 1rem;
+}
+
+.profile-header h3 {
+	font-size: 1.4rem;
+	margin: 0;
+}
+
+.profile-header span {
+	font-size: 1rem;
+	color: gray;
+}
+
+.profile-user {
+	margin-left: 1rem;
+	cursor: pointer;
+}
+
+.cover-header {
+	width: 100%;
+	margin-top: 1rem;
+	min-height: 24%;
+	position: relative;
+}
+
+.cover-image {
+	width: 100%;
+	height: 17vh !important;
+	background-size: cover;
+	object-fit: cover;
+}
+
+.profile-picture {
+	width: 100%;
+	position: absolute;
+	bottom: 0rem;
+	left: 1.5rem;
+	display: flex;
+	justify-content: space-between;
+}
+
+.picture {
+	width: 55%;
+}
+
+.profile-image {
+	width: 135px;
+	height: 100%;
+	border-radius: 50%;
+	background-size: cover;
+}
+
+.btn {
+	align-self: flex-end;
+	border: none;
+	padding: 0.7rem 1rem;
+	cursor: pointer;
+	border-radius: 3rem;
+	border: 1px solid gray;
+	background: transparent;
+	color: white;
+	margin-right: 4rem !important;
+	transition: all 0.5s ease-in-out;
+	font-size: 1.3rem;
+}
+
+.btn:hover {
+	background: #4f5c68;
+}
+
+.profile-desc {
+	margin-left: 2rem;
+}
+
+.profile-names {
+	color: white;
+	font-size: 1.8rem;
+	margin-top: 2rem;
+}
+
+.profile-names h3 {
+	margin: 0;
+	padding: 0;
+}
+
+.profile-names span {
+	color: gray;
+	font-size: 1.5rem;
+}
+
+.location {
+	margin-top: 1.6rem;
+	display: flex;
+	color: white;
+	font-size: 1.8rem;
+}
+
+.location-country {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-right: 1rem;
+}
+
+.location-country span {
+	color: gray;
+	font-size: 1.5rem;
+}
+
+.location-country img {
+	width: 20px;
+}
+
+.followers-following {
+	margin-left: 2rem;
+	margin-top: 2rem;
+	color: white;
+	font-size: 1.3rem;
+}
+
+.followers-following a {
+	margin-right: 2rem;
+}
+
+.following {
+}
+
+.following-count {
+	margin-right: 0.3rem;
+	font-weight: 500;
+}
+
+.following-text {
+	color: gray;
+}
+
+.followers-count {
+	margin-right: 0.3rem;
+	font-weight: 500;
+}
+
+.followers-text {
+	color: gray;
+}
+
+.profile-tabs {
+	width: 100%;
+	height: 5vh;
+	display: flex;
+	margin-top: 2rem;
+	justify-content: space-between;
+	border-bottom: 0.1px solid #2d4153;
+}
+
+.tabs {
+	height: 5vh;
+	width: fit-content;
+
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.tabs a {
+	font-size: 1.5rem !important;
+
+	color: white;
+	font-weight: 500;
+	padding: 0 4rem;
+}
+.tabs a:last-child {
+}
+
+.tabs-nonActive {
+	color: gray;
+}
+
+.tabs:hover {
+	background: #4f5c68;
+	color: white !important;
+}
