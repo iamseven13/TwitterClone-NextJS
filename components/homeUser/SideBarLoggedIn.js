@@ -1,11 +1,24 @@
 import { useSession, signOut } from 'next-auth/react';
 
-export default function SideBarLoggedIn({ styles }) {
+export default function SideBarLoggedIn({ styles, user }) {
 	const { data: session, status } = useSession();
 	function handleLogout() {
 		signOut();
 		console.log(session);
 	}
+	console.log(user);
+	console.log(session);
+	let username;
+
+	if (username === undefined) {
+		username = user;
+	}
+
+	if (session) {
+		const { name, surname } = session.token;
+		username = name.toLowerCase() + surname.toLowerCase();
+	}
+
 	return (
 		<div className={styles.navbar}>
 			<a href="/" className={styles.logo}>
@@ -58,7 +71,7 @@ export default function SideBarLoggedIn({ styles }) {
 						</a>
 					</li>
 					<li>
-						<a className={styles.navlinks} href="/profile">
+						<a className={styles.navlinks} href={username}>
 							{' '}
 							<img src="/images/user.svg" alt="" />
 							Profile

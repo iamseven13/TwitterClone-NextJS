@@ -2,14 +2,17 @@ import styles from '../../styles/Home.module.css';
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { useSession, getSession } from 'next-auth/react';
+import { getData } from '../../DUMMY_TWEETS';
 
 import SideBarLoggedIn from '../../components/homeUser/SideBarLoggedIn';
 import MiddlePartLoggedIn from '../../components/homeUser/MiddlePartLoggedIn';
 import ThirdPartLoggedIn from '../../components/homeUser/ThirdPartLoggedIn';
 
-export default function Home() {
+export default function Home(props) {
+	const { tweets } = props;
 	const [isLoading, setIsLoading] = useState(true);
 	const { data: session, status, loading } = useSession();
+	console.log(tweets);
 
 	console.log(session);
 	console.log(status);
@@ -42,10 +45,21 @@ export default function Home() {
 			<main className={styles.main}>
 				<SideBarLoggedIn styles={styles} />
 
-				<MiddlePartLoggedIn styles={styles} />
+				<MiddlePartLoggedIn styles={styles} tweets={tweets} />
 
 				<ThirdPartLoggedIn styles={styles} />
 			</main>
 		</div>
 	);
+}
+
+export async function getStaticProps(context) {
+	const tweets = getData();
+
+	return {
+		props: {
+			tweets,
+		},
+		revalidate: 30,
+	};
 }

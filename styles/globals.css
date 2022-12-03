@@ -6,7 +6,7 @@ body {
 		Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 	font-size: 62.5%;
 	background: #15202b;
-	overflow: hidden;
+	overflow-x: hidden;
 }
 
 /* --color-primary: #15202b;

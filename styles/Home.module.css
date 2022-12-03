@@ -1,5 +1,5 @@
 .container {
-	width: 70vw;
+	width: 67vw;
 	margin: auto;
 	position: relative;
 }
@@ -13,13 +13,13 @@
 
 .navbar {
 	flex: 0.5;
+	max-width: 11vw;
 }
 
 .middle {
 	flex: 1.5;
 	border-left: 0.1px solid #2d4153;
 	border-right: 0.1px solid #2d4153;
-	border-top: 0.1px solid #2d4153;
 }
 
 .signup {
@@ -38,12 +38,12 @@
 .navlinks {
 	display: flex;
 	align-items: center;
-	font-size: 1.6rem;
+	font-size: 1.8rem;
 	font-weight: 500;
 	color: white;
 	margin-bottom: 2rem;
 	width: 100%;
-	padding: 0.5rem 0.5rem;
+	padding: 0.1rem 0.5rem;
 }
 
 .navlinks:hover {
@@ -53,6 +53,8 @@
 
 .navlinks img {
 	margin-right: 2rem;
+	width: 27px;
+	height: 27px;
 }
 
 /* Second part*/
@@ -142,6 +144,7 @@
 .signup {
 	font-size: 1.9rem;
 	color: white;
+	max-width: 23vw;
 }
 
 .signup-container {
@@ -177,11 +180,13 @@
 
 .sidebar-btn-logout {
 	border: none;
-	padding: 2rem 6rem;
+	padding: 1.5rem 5rem;
 	border-radius: 3rem;
 	cursor: pointer;
 	background: #1d9bf0;
 	color: white;
+	transition: all 0.5s ease-in-out;
+	font-size: 1.8rem;
 }
 
 .sidebar-btn-logout:hover {
@@ -193,7 +198,7 @@
 	margin: 2rem;
 	border-radius: 2rem;
 	padding: 2rem;
-	font-size: 1.9rem;
+	font-size: 1.6rem;
 	color: white;
 }
 
@@ -206,7 +211,7 @@
 	margin: 2rem;
 	border-radius: 2rem;
 	padding: 2rem;
-	font-size: 1.9rem;
+	font-size: 1.6rem;
 	color: white;
 }
 
@@ -224,7 +229,7 @@
 .user {
 	display: flex;
 	align-items: center;
-	padding: 2rem;
+	padding: 2rem 0rem;
 	justify-content: space-between;
 }
 
@@ -236,8 +241,8 @@
 }
 
 .user span {
-	font-size: 1.5rem;
-	margin-right: rem;
+	font-size: 1.3rem;
+	margin-right: 1rem;
 }
 
 .user button {
@@ -258,4 +263,9 @@
 
 .user-firstPart {
 	display: flex;
+}
+
+/* MOBILE*/
+
+@media only screen and (max-width: 780px) {
 }
