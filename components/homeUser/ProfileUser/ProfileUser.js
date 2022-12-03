@@ -1,8 +1,27 @@
+import { useSession } from 'next-auth/react';
+import { useState, useEffect } from 'react';
+
 import Image from 'next/image';
 import styles from './ProfileUser.module.css';
 import styles2 from '../Tweets.module.css';
 
-export default function ProfileUser() {
+export default function ProfileUser(props) {
+	// const [allData, setData] = useState();
+	const { data } = props.props;
+	console.log(data);
+
+	const [avatarPic, setAvatarPic] = useState(
+		'https://images.unsplash.com/photo-1534294668821-28a3054f4256?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1471&q=80'
+	);
+
+	const { data: session, status, loading } = useSession();
+
+	useEffect(() => {
+		if (session) {
+			setAvatarPic(session.token.avatar);
+		}
+	}, []);
+
 	return (
 		<div className={styles['profile-container']}>
 			<div className={styles['profile-header']}>
@@ -10,7 +29,9 @@ export default function ProfileUser() {
 					<img src="./images/left-arrow.svg" alt="" />
 				</a>
 				<div className={styles['profile-user']}>
-					<h3>Ylli Fazliu</h3>
+					<h3>
+						{data.others.name} {data.others.surname}
+					</h3>
 					<span>604 Tweets</span>
 				</div>
 			</div>
@@ -24,7 +45,7 @@ export default function ProfileUser() {
 				<div className={styles['profile-picture']}>
 					<div className={styles.picture}>
 						<Image
-							src="/images/profile.jpg"
+							src={data.others.avatar}
 							className={styles['profile-image']}
 							width={'170'}
 							height={100}
@@ -36,8 +57,10 @@ export default function ProfileUser() {
 
 			<div className={styles['profile-desc']}>
 				<div className={styles['profile-names']}>
-					<h3>Ylli Fazliu</h3>
-					<span>@yllifazliu</span>
+					<h3>
+						{data.others.name} {data.others.surname}
+					</h3>
+					<span>@{data.others.username}</span>
 				</div>
 				<div className={styles.location}>
 					<div className={styles['location-country']}>
@@ -89,7 +112,7 @@ export default function ProfileUser() {
 				<div className={styles2['user-tweet']}>
 					<a href="">
 						<Image
-							src="/images/profile.jpg"
+							src={data.others.avatar}
 							alt=""
 							width={45}
 							height={45}
@@ -99,10 +122,12 @@ export default function ProfileUser() {
 					<div className={styles2['user-info']}>
 						<div className={styles2['name-username']}>
 							<a href="" className={styles2.fullname}>
-								<span>Ylli Fazliu</span>
+								<span>
+									{data.others.name} {data.others.surname}
+								</span>
 							</a>
 							<a href="" className={styles2.username}>
-								<span>@yllifazliu</span>
+								<span>@{data.others.username}</span>
 							</a>
 						</div>
 						<div className={styles2['tweet-info']}>

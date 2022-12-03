@@ -20,17 +20,18 @@ export default function RegisterForm(props) {
 		const enteredEmail = emailInputRef.current.value;
 		const enteredPassword = passwordInputRef.current.value;
 		const enteredPassword2 = passwordInputRef2.current.value;
-		const userAvatar = 'https://api.lorem.space/image/shoes?w=150&h=150';
 
 		if (enteredPassword !== enteredPassword2) {
 			return res.json({ msg: 'password should match' });
 		}
 
+		const username = (enteredName + enteredSurname).toLowerCase();
+
 		const clientData = {
 			name: enteredName,
 			surname: enteredSurname,
 			email: enteredEmail,
-			avatar: userAvatar,
+			username: username,
 			password: enteredPassword,
 			password2: enteredPassword2,
 		};

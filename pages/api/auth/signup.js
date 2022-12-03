@@ -4,7 +4,9 @@ import connectToDB from '../../../lib/db';
 async function handler(req, res) {
 	const data = req.body;
 
-	const { name, surname, avatar, email, password, password2 } = data;
+	const { name, surname, email, username, password, password2 } = data;
+	let avatar =
+		'https://images.unsplash.com/photo-1524787452540-d4034dc921e8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80';
 
 	if (
 		!name ||
@@ -38,6 +40,7 @@ async function handler(req, res) {
 		name,
 		surname,
 		avatar,
+		username,
 		email,
 		encryptedPass,
 	});
