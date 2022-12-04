@@ -7,7 +7,7 @@ export default async function handler(req, res) {
 			const client = await connectDB();
 
 			const user = await User.findOne({ username: req.body }).select(
-				'-password'
+				'-password -email -_id'
 			);
 
 			if (!user) {

@@ -12,11 +12,12 @@ import { useRouter } from 'next/router';
 import ThirdPart from '../../components/homeguest/ThirdPart';
 
 export default function Profile(props) {
+	console.log(props);
 	const [path, setPath] = useState();
 
 	const [isOwner, setIsOwner] = useState(false);
 
-	const [fetchData, setFetchedData] = useState();
+	const [fetchData, setFetchedData] = useState(props);
 
 	const { data: session, status } = useSession();
 
@@ -92,4 +93,25 @@ export default function Profile(props) {
 			</main>
 		</div>
 	);
+}
+
+export async function getStaticPaths() {
+	return {
+		paths: [{ params: { profile: 'yllihey' } }],
+		fallback: false, // can also be true or 'blocking'
+	};
+}
+
+export async function getStaticProps(context) {
+	return {
+		props: {
+			user: {
+				name: 'test',
+				surname: 'test',
+				avatar:
+					'www.gravatar.com/avatar/0ec80989ce27b889868092e028f4fd73?s=200&r=pg&d=mm',
+				username: 'test',
+			},
+		},
+	};
 }
