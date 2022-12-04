@@ -46,14 +46,11 @@ export default function Profile(props) {
 
 			if (path) {
 				try {
-					const res = await fetch(
-						'http://localhost:3000/api/profile/ProfileData',
-						{
-							method: 'POST',
-							body: path,
-							'Content-Type': 'application/json',
-						}
-					);
+					const res = await fetch('/api/profile/ProfileData', {
+						method: 'POST',
+						body: path,
+						'Content-Type': 'application/json',
+					});
 					const data = await res.json();
 
 					setFetchedData(data);
