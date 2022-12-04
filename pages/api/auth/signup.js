@@ -1,12 +1,14 @@
 import { hashPassword } from '../../../lib/auth';
 import connectToDB from '../../../lib/db';
+import gravatar from 'gravatar';
+import User from '../../../models/User';
+import connectDB from '../../../config/db';
 
 async function handler(req, res) {
 	const data = req.body;
+	const client = await connectDB();
 
 	const { name, surname, email, username, password, password2 } = data;
-	let avatar =
-		'https://images.unsplash.com/photo-1524787452540-d4034dc921e8?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80';
 
 	if (
 		!name ||
@@ -23,30 +25,40 @@ async function handler(req, res) {
 		return;
 	}
 
-	const client = await connectToDB();
-	const db = client.db();
+	const newUsername = username.toLowerCase().trim();
+	console.log(newUsername);
 
-	const existingUser = await db.collection('users').findOne({ email: email });
+	try {
+		let user = await User.findOne({ email });
+		if (user) {
+			return res.status(422).json({ msg: 'User already exists' });
+		}
 
-	if (existingUser) {
-		res.status(422).json({ msg: 'User already exists' });
-		client.close();
-		return;
+		const avatar = gravatar.url(email, {
+			s: '200',
+			r: 'pg',
+			d: 'mm',
+		});
+
+		const sendAvatar = avatar.replace('//', '');
+
+		const encryptedPass = await hashPassword(password);
+
+		user = new User({
+			name,
+			surname,
+			email,
+			newUsername,
+			avatar: sendAvatar,
+			password: encryptedPass,
+		});
+
+		await user.save();
+
+		return res.json({ msg: 'user successfully registered' });
+	} catch (e) {
+		console.log(e.message);
 	}
-
-	const encryptedPass = await hashPassword(password);
-
-	const result = await db.collection('users').insertOne({
-		name,
-		surname,
-		avatar,
-		username,
-		email,
-		encryptedPass,
-	});
-
-	res.status(201).json({ msg: 'Successfully registered' });
-	client.close();
 }
 
 export default handler;

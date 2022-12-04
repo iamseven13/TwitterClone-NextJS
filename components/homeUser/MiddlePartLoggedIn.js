@@ -5,17 +5,62 @@ import styles from './MiddlePartLoggedIn.module.css';
 import Tweets from './Tweets';
 import { useEffect, useState } from 'react';
 export default function MiddlePartLoggedIn({ tweets }) {
-	const [avatarPic, setAvatarPic] = useState(
-		'https://images.unsplash.com/photo-1534294668821-28a3054f4256?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1471&q=80'
-	);
+	const [avatarPic, setAvatarPic] = useState();
 
 	const { data: session, status, loading } = useSession();
+	const [tweet, setTweet] = useState('');
+
+	async function handleTweetSubmit(e) {
+		e.preventDefault();
+		setTweet('');
+
+		const tweetData = {
+			tweet,
+			username: session.token.username,
+			name: session.token.name,
+			surname: session.token.surname,
+			avatar: session.token.avatar,
+		};
+
+		try {
+			const res = await fetch('/api/tweets/post', {
+				method: 'POST',
+				body: JSON.stringify(tweetData),
+				'Content-Type': 'application/json',
+			});
+			const data = await res.json();
+			console.log(data);
+		} catch (e) {
+			console.log(e.message);
+		}
+	}
 
 	useEffect(() => {
 		if (session) {
 			setAvatarPic(session.token.avatar);
+			const { token } = session;
+			setAvatarPic(token.avatar);
 		}
+
+		async function fetchAllTweets() {
+			try {
+				const res = await fetch('/api/tweets/getalltweets', {
+					method: 'GET',
+				});
+				const data = await res.json();
+				console.log(data);
+			} catch (e) {
+				console.log(e.message);
+			}
+		}
+		fetchAllTweets();
 	}, []);
+
+	console.log(session);
+
+	if (!session) {
+		return <p>not logged in</p>;
+	}
 
 	return (
 		<div className={styles.middle}>
@@ -24,36 +69,38 @@ export default function MiddlePartLoggedIn({ tweets }) {
 				<img src="/images/list.svg" alt="" />
 			</div>
 			<div className={styles['image-textarea']}>
-				<Image
-					src={avatarPic}
+				<img
+					src={`https://${session.token.avatar}`}
 					alt=""
-					width={35}
-					height={35}
 					className={styles['image-textarea-user']}
 				/>
 				<div className={styles['text-area']}>
-					<textarea
-						maxLength="250"
-						placeholder="What is happening?"
-						autoFocus
-					/>
-					<div className={styles.icons}>
-						<div className={styles.AllIcons}>
-							<a href="">
-								<img src="./images/explore.svg" alt="" />
-							</a>
-							<a href="">
-								<img src="./images/user.svg" alt="" />
-							</a>
-							<a href="">
-								<img src="./images/list.svg" alt="" />
-							</a>
-							<a href="">
-								<img src="./images/more.svg" alt="" />
-							</a>
+					<form onSubmit={handleTweetSubmit}>
+						<textarea
+							maxLength="250"
+							placeholder="What is happening?"
+							autoFocus
+							onChange={(e) => setTweet(e.target.value)}
+							value={tweet}
+						/>
+						<div className={styles.icons}>
+							<div className={styles.AllIcons}>
+								<a href="">
+									<img src="./images/explore.svg" alt="" />
+								</a>
+								<a href="">
+									<img src="./images/user.svg" alt="" />
+								</a>
+								<a href="">
+									<img src="./images/list.svg" alt="" />
+								</a>
+								<a href="">
+									<img src="./images/more.svg" alt="" />
+								</a>
+							</div>
+							<button className={styles.tweetBtn}>Tweet</button>
 						</div>
-						<button className={styles.tweetBtn}>Tweet</button>
-					</div>
+					</form>
 				</div>
 			</div>
 

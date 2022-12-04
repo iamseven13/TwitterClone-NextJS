@@ -64,7 +64,7 @@ export default function Tweets({ tweets }) {
 					<div className={styles['user-tweet']}>
 						<a href="">
 							<Image
-								src="https://api.lorem.space/image/book?w=150&h=220"
+								src="https://www.gravatar.com/avatar/00000000000000000000000000000000"
 								alt=""
 								width={35}
 								height={35}

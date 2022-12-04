@@ -1,13 +1,13 @@
 import { useSession, signOut } from 'next-auth/react';
 
-export default function SideBarLoggedIn({ styles, user }) {
+export default function SideBarLoggedIn({ styles, user, setIsUserLoggedIn }) {
 	const { data: session, status } = useSession();
-	function handleLogout() {
+	function handleLogout(e) {
 		signOut();
+		setIsUserLoggedIn(false);
 		console.log(session);
 	}
-	console.log(user);
-	console.log(session);
+
 	let username;
 
 	if (username === undefined) {

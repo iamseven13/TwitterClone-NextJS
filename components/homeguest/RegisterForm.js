@@ -25,7 +25,7 @@ export default function RegisterForm(props) {
 			return res.json({ msg: 'password should match' });
 		}
 
-		const username = (enteredName + enteredSurname).toLowerCase();
+		const username = (enteredName + enteredSurname).toLowerCase().trim();
 
 		const clientData = {
 			name: enteredName,
