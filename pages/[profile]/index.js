@@ -44,25 +44,29 @@ export default function Profile(props) {
 			const path = window.location.pathname.split('/')[1];
 			console.log(path);
 
-			try {
-				const res = await fetch(
-					'http://localhost:3000/api/profile/ProfileData',
-					{
-						method: 'POST',
-						body: path,
-						'Content-Type': 'application/json',
+			if (path) {
+				try {
+					const res = await fetch(
+						'http://localhost:3000/api/profile/ProfileData',
+						{
+							method: 'POST',
+							body: path,
+							'Content-Type': 'application/json',
+						}
+					);
+					const data = await res.json();
+
+					setFetchedData(data);
+					console.log(data);
+
+					if (data.error) {
+						console.log(data.error);
 					}
-				);
-				const data = await res.json();
-
-				setFetchedData(data);
-				console.log(data);
-
-				if (data.error) {
-					console.log(data.error);
+				} catch (e) {
+					console.log(e.message);
 				}
-			} catch (e) {
-				console.log(e.message);
+			} else {
+				console.log(`${path} doesnt exist`);
 			}
 		}
 		fetchData();
