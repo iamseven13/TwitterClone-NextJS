@@ -1,7 +1,8 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { verifyPassword } from '../../../lib/auth';
-import connectToDB from '../../../lib/db';
+import connectDB from '../../../config/db';
+import User from '../../../models/User';
 
 export default NextAuth({
 	session: {
@@ -11,13 +12,14 @@ export default NextAuth({
 	providers: [
 		CredentialsProvider({
 			async authorize(credentials) {
-				const client = await connectToDB();
+				const client = await connectDB();
+				console.log(credentials);
 
-				const usersCollection = client.db().collection('users');
-
-				const user = await usersCollection.findOne({
+				const user = await User.findOne({
 					email: credentials.email,
 				});
+
+				console.log(user);
 
 				if (!user) {
 					client.close();
@@ -25,19 +27,20 @@ export default NextAuth({
 				}
 				const isValid = await verifyPassword(
 					credentials.password,
-					user.encryptedPass
+					user.password
 				);
 
 				if (!isValid) {
 					client.close();
 					throw new Error('Could not log you in!');
 				}
-				client.close();
+
 				return {
 					email: user.email,
 					name: user.name,
 					surname: user.surname,
 					avatar: user.avatar,
+					username: user.username,
 				};
 			},
 		}),

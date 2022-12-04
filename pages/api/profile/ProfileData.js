@@ -1,19 +1,20 @@
-import connectToDB from '../../../lib/db';
+import User from '../../../models/User';
+import connectDB from '../../../config/db';
 
 export default async function handler(req, res) {
 	if (req.method === 'POST') {
 		try {
-			const client = await connectToDB();
+			const client = await connectDB();
 
-			const db = client.db();
-
-			const user = await db.collection('users').findOne({ username: req.body });
+			const user = await User.findOne({ username: req.body }).select(
+				'-password'
+			);
 
 			if (!user) {
-				res.json({ error: 'User does not exist' });
+				return res.json({ error: 'User does not exist' });
 			}
-			const { encryptedPass, email, ...others } = user;
-			return res.json({ others });
+
+			return res.json({ user });
 		} catch (e) {
 			return res.status(422).json({ msg: 'try again later' });
 		}

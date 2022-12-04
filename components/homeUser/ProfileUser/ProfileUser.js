@@ -7,12 +7,9 @@ import styles2 from '../Tweets.module.css';
 
 export default function ProfileUser(props) {
 	// const [allData, setData] = useState();
-	const { data } = props.props;
-	console.log(data);
+	const { fetchData, isOwner } = props;
 
-	const [avatarPic, setAvatarPic] = useState(
-		'https://images.unsplash.com/photo-1534294668821-28a3054f4256?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1471&q=80'
-	);
+	const [avatarPic, setAvatarPic] = useState();
 
 	const { data: session, status, loading } = useSession();
 
@@ -22,6 +19,10 @@ export default function ProfileUser(props) {
 		}
 	}, []);
 
+	if (!fetchData) {
+		return <p>Loading</p>;
+	}
+
 	return (
 		<div className={styles['profile-container']}>
 			<div className={styles['profile-header']}>
@@ -30,7 +31,7 @@ export default function ProfileUser(props) {
 				</a>
 				<div className={styles['profile-user']}>
 					<h3>
-						{data.others.name} {data.others.surname}
+						{fetchData.user.name} {fetchData.user.surname}
 					</h3>
 					<span>604 Tweets</span>
 				</div>
@@ -45,22 +46,24 @@ export default function ProfileUser(props) {
 				<div className={styles['profile-picture']}>
 					<div className={styles.picture}>
 						<Image
-							src={data.others.avatar}
+							src={`https://${fetchData.user.avatar}`}
 							className={styles['profile-image']}
 							width={'170'}
 							height={100}
 						/>
 					</div>
-					<button className={styles.btn}>Edit Profile</button>
+					<button className={styles.btn}>
+						{!isOwner ? 'Edit Profile' : 'Follow'}
+					</button>
 				</div>
 			</div>
 
 			<div className={styles['profile-desc']}>
 				<div className={styles['profile-names']}>
 					<h3>
-						{data.others.name} {data.others.surname}
+						{fetchData.user.name} {fetchData.user.surname}
 					</h3>
-					<span>@{data.others.username}</span>
+					<span>@{fetchData.user.username}</span>
 				</div>
 				<div className={styles.location}>
 					<div className={styles['location-country']}>
@@ -111,11 +114,11 @@ export default function ProfileUser(props) {
 			<div className={styles2.tweets}>
 				<div className={styles2['user-tweet']}>
 					<a href="">
-						<Image
-							src={data.others.avatar}
+						<img
+							src={fetchData.user.avatar}
 							alt=""
-							width={45}
-							height={45}
+							// width={45}
+							// height={45}
 							className={styles2['image-textarea-user']}
 						/>{' '}
 					</a>
@@ -123,11 +126,11 @@ export default function ProfileUser(props) {
 						<div className={styles2['name-username']}>
 							<a href="" className={styles2.fullname}>
 								<span>
-									{data.others.name} {data.others.surname}
+									{fetchData.user.name} {fetchData.user.surname}
 								</span>
 							</a>
 							<a href="" className={styles2.username}>
-								<span>@{data.others.username}</span>
+								<span>@{fetchData.user.username}</span>
 							</a>
 						</div>
 						<div className={styles2['tweet-info']}>
