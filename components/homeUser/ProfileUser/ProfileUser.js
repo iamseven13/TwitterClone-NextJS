@@ -114,11 +114,11 @@ export default function ProfileUser(props) {
 			<div className={styles2.tweets}>
 				<div className={styles2['user-tweet']}>
 					<a href="">
-						<img
-							src={fetchData.user.avatar}
+						<Image
+							src={`https://${fetchData.user.avatar}`}
 							alt=""
-							// width={45}
-							// height={45}
+							width={45}
+							height={45}
 							className={styles2['image-textarea-user']}
 						/>{' '}
 					</a>
