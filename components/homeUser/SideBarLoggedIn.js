@@ -6,6 +6,8 @@ export default function SideBarLoggedIn({ styles, user, setIsUserLoggedIn }) {
 		signOut();
 		setIsUserLoggedIn(false);
 		console.log(session);
+
+		localStorage.removeItem('loggedInUsername');
 	}
 
 	let username;

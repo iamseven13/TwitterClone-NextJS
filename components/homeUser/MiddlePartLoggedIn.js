@@ -9,6 +9,7 @@ export default function MiddlePartLoggedIn({ tweets }) {
 
 	const { data: session, status, loading } = useSession();
 	const [tweet, setTweet] = useState('');
+	const [submitTweet, setSubmitTweet] = useState(false);
 
 	async function handleTweetSubmit(e) {
 		e.preventDefault();
@@ -30,6 +31,7 @@ export default function MiddlePartLoggedIn({ tweets }) {
 			});
 			const data = await res.json();
 			console.log(data);
+			setSubmitTweet(true);
 		} catch (e) {
 			console.log(e.message);
 		}
@@ -44,7 +46,7 @@ export default function MiddlePartLoggedIn({ tweets }) {
 
 		async function fetchAllTweets() {
 			try {
-				const res = await fetch('/api/tweets/getalltweets', {
+				const res = await fetch('/api/tweets/getposts', {
 					method: 'GET',
 				});
 				const data = await res.json();
@@ -109,7 +111,11 @@ export default function MiddlePartLoggedIn({ tweets }) {
 					Show 105 Tweets
 				</a>
 			</div>
-			<Tweets tweets={tweets} />
+			<Tweets
+				tweets={tweets}
+				submitTweet={submitTweet}
+				setSubmitTweet={setSubmitTweet}
+			/>
 		</div>
 	);
 }

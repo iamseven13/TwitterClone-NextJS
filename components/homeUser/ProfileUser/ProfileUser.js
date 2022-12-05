@@ -1,5 +1,5 @@
 import { useSession } from 'next-auth/react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import Image from 'next/image';
 import styles from './ProfileUser.module.css';
@@ -7,17 +7,32 @@ import styles2 from '../Tweets.module.css';
 
 export default function ProfileUser(props) {
 	// const [allData, setData] = useState();
-	const { fetchData, isOwner } = props;
+	const { fetchData, isOwner, loggedInUsername, isFollowing } = props;
 
 	const [avatarPic, setAvatarPic] = useState();
 
-	const { data: session, status, loading } = useSession();
+	const { username } = fetchData.user;
 
+	const { data: session, status, loading } = useSession();
 	useEffect(() => {
 		if (session) {
 			setAvatarPic(session.token.avatar);
 		}
 	}, []);
+
+	console.log(username);
+	async function handleFollow(e) {
+		const data = {
+			loggedInUsername: loggedInUsername,
+			followingUsername: username,
+		};
+
+		e.preventDefault();
+		const res = await fetch('/api/follow/follow', {
+			method: 'POST',
+			body: JSON.stringify(data),
+		});
+	}
 
 	if (!fetchData) {
 		return <p>Loading</p>;
@@ -52,9 +67,17 @@ export default function ProfileUser(props) {
 							height={100}
 						/>
 					</div>
-					<button className={styles.btn}>
-						{!isOwner ? 'Edit Profile' : 'Follow'}
-					</button>
+					{isOwner ? <button className={styles.btn}>Edit Profile</button> : ''}
+					{!isOwner ? (
+						<button
+							onClick={handleFollow}
+							className={styles.btn + ' ' + styles.btnUnfollow}
+						>
+							{isFollowing ? 'Unfollow' : 'Follow'}
+						</button>
+					) : (
+						''
+					)}
 				</div>
 			</div>
 
@@ -67,11 +90,11 @@ export default function ProfileUser(props) {
 				</div>
 				<div className={styles.location}>
 					<div className={styles['location-country']}>
-						<img src="./images/list.svg" alt="" />
+						<img src="./images/home.svg" alt="" />
 						<span>Finland</span>
 					</div>
 					<div className={styles['location-country']}>
-						<img src="./images/home.svg" alt="" />
+						<img src="./images/list.svg" alt="" />
 						<span>Joined July 2010</span>
 					</div>
 				</div>

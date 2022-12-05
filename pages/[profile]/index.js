@@ -1,4 +1,4 @@
-import { useSession } from 'next-auth/react';
+import { useSession, getSession } from 'next-auth/react';
 
 import useSWR from 'swr';
 import SideBarLoggedIn from '../../components/homeUser/SideBarLoggedIn';
@@ -14,17 +14,54 @@ import ThirdPart from '../../components/homeguest/ThirdPart';
 export default function Profile(props) {
 	console.log(props);
 	const [path, setPath] = useState();
-
+	const [loggedInUsername, setLoggedInUsername] = useState();
 	const [isOwner, setIsOwner] = useState(false);
-
+	const [isFollowing, setIsFollowing] = useState(false);
 	const [fetchData, setFetchedData] = useState(props);
 
 	const { data: session, status } = useSession();
 
 	const [isUserLoggedIn, setIsUserLoggedIn] = useState(Boolean(session));
-	console.log(session);
 
 	let username;
+
+	const { user } = fetchData;
+
+	useEffect(() => {
+		const loggedIn = localStorage.getItem('loggedInUsername');
+		setLoggedInUsername(loggedIn);
+		if (fetchData && loggedIn) {
+			console.log(path);
+			if (fetchData.user.username === loggedInUsername) {
+				setIsOwner(true);
+				console.log('owner');
+			} else {
+				setIsOwner(false);
+				console.log('not owner');
+			}
+		}
+	}, [path, fetchData]);
+
+	const followRequest = {
+		loggedInUsername,
+		followProfile: user.username,
+	};
+
+	useEffect(() => {
+		async function isFollowing() {
+			try {
+				const res = await fetch('/api/follow/isfollowing', {
+					method: 'POST',
+					body: JSON.stringify(followRequest),
+				});
+				const data = await res.json();
+				setIsFollowing(data.isFollowing);
+			} catch (e) {
+				console.log(e.message);
+			}
+		}
+		isFollowing();
+	}, [fetchData]);
 
 	useEffect(() => {
 		const path = window.location.pathname.split('/')[1];
@@ -53,7 +90,7 @@ export default function Profile(props) {
 						'Content-Type': 'application/json',
 					});
 					const data = await res.json();
-
+					console.log(data);
 					setFetchedData(data);
 					console.log(data);
 
@@ -70,6 +107,8 @@ export default function Profile(props) {
 		fetchData();
 	}, []);
 
+	console.log(fetchData);
+
 	return (
 		<div className={styles.container}>
 			<main className={styles.main}>
@@ -83,7 +122,12 @@ export default function Profile(props) {
 					<SideBar styles={styles} />
 				)}
 
-				<ProfileUser fetchData={fetchData} isOwner={isOwner} />
+				<ProfileUser
+					fetchData={fetchData}
+					isOwner={isOwner}
+					loggedInUsername={loggedInUsername}
+					isFollowing={isFollowing}
+				/>
 
 				{!isUserLoggedIn ? (
 					<ThirdPartLoggedIn styles={styles} />
@@ -95,23 +139,42 @@ export default function Profile(props) {
 	);
 }
 
-export async function getStaticPaths() {
-	return {
-		paths: [{ params: { profile: 'yllihey' } }],
-		fallback: false, // can also be true or 'blocking'
-	};
-}
-
 export async function getStaticProps(context) {
+	const params = context.params.profile;
+
+	const res = await fetch('http://localhost:3000/api/profile/ProfileData', {
+		method: 'POST',
+		body: params,
+		'Content-Type': 'application/json',
+	});
+	const data = await res.json();
+	console.log(data);
+
+	// const { name } = data.user;
+	// if (!name) {
+	// 	return <h1>DATA NOT HERE</h1>;
+	// }
+
 	return {
 		props: {
 			user: {
-				name: 'test',
-				surname: 'test',
+				name: 'data.user.name,',
+				surname: 'data.user.surname,',
 				avatar:
 					'www.gravatar.com/avatar/0ec80989ce27b889868092e028f4fd73?s=200&r=pg&d=mm',
-				username: 'test',
+				username: 'data.user.username,',
 			},
 		},
+	};
+}
+
+export async function getStaticPaths() {
+	return {
+		paths: [
+			{ params: { profile: 'sevenbambi' } },
+			{ params: { profile: 'sevenpayne' } },
+			{ params: { profile: 'charliedongo' } },
+		],
+		fallback: false, // can also be true or 'blocking'
 	};
 }

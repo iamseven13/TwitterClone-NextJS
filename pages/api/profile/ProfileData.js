@@ -2,18 +2,18 @@ import User from '../../../models/User';
 import connectDB from '../../../config/db';
 
 export default async function handler(req, res) {
+	console.log(`this is from profiledata ${req.body}`);
+	const username = req.body;
 	if (req.method === 'POST') {
 		try {
-			const client = await connectDB();
-
-			const user = await User.findOne({ username: req.body }).select(
+			const user = await User.findOne({ username: username }).select(
 				'-password -email -_id'
 			);
 
 			if (!user) {
 				return res.json({ error: 'User does not exist' });
 			}
-
+			console.log(`this is from the api ${user}`);
 			return res.json({ user });
 		} catch (e) {
 			return res.status(422).json({ msg: 'try again later' });

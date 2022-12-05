@@ -1,13 +1,13 @@
 import mongoose from 'mongoose';
-
-const UserSchema = new mongoose.Schema({
+const Schema = mongoose.Schema;
+const UserSchema = new Schema({
 	name: {
 		type: String,
 	},
 	surname: {
 		type: String,
 	},
-	newUsername: {
+	username: {
 		type: String,
 	},
 	email: {
@@ -18,6 +18,24 @@ const UserSchema = new mongoose.Schema({
 	password: {
 		type: String,
 	},
+
+	following: [
+		{
+			user: {
+				type: Schema.Types.ObjectId,
+				ref: 'users',
+			},
+		},
+	],
+
+	followers: [
+		{
+			user: {
+				type: Schema.Types.ObjectId,
+				ref: 'users',
+			},
+		},
+	],
 
 	avatar: {
 		type: String,

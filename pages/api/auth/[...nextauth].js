@@ -7,7 +7,7 @@ import User from '../../../models/User';
 export default NextAuth({
 	session: {
 		jwt: true,
-		maxAge: 24 * 60 * 60,
+		maxAge: 30 * 24 * 60 * 60,
 	},
 	providers: [
 		CredentialsProvider({

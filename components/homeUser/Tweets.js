@@ -4,7 +4,34 @@ import { useEffect, useState } from 'react';
 
 import { getData } from '../../DUMMY_TWEETS';
 
-export default function Tweets({ tweets }) {
+export default function Tweets(props) {
+	const { propsTweets } = props;
+	console.log(props);
+	const [tweets, setAllTweets] = useState(props.tweets.tweets);
+	const [isLoading, setIsloading] = useState(true);
+	console.log(tweets);
+	useEffect(() => {
+		if (tweets) {
+			try {
+				async function fetchPosts() {
+					const res = await fetch('/api/tweets/getposts', {
+						method: 'GET',
+					});
+
+					const data = await res.json();
+					setAllTweets(data);
+
+					props.setSubmitTweet(false);
+					setIsloading(false);
+					console.log(data);
+				}
+				fetchPosts();
+			} catch (e) {
+				console.log('cant load tweets');
+			}
+		}
+	}, [props.submitTweet]);
+
 	if (!tweets) {
 		return (
 			<div className={styles.tweets}>
@@ -57,14 +84,16 @@ export default function Tweets({ tweets }) {
 		);
 	}
 
-	return (
-		<div className={styles.tweets}>
-			{tweets.tweets
-				.map((tweet) => (
+	if (tweets)
+		return (
+			<div className={styles.tweets}>
+				{tweets.map((tweet) => (
 					<div className={styles['user-tweet']}>
 						<a href="">
 							<Image
-								src="https://www.gravatar.com/avatar/00000000000000000000000000000000"
+								src={
+									isLoading ? props.tweets.tweets : `https://${tweet.avatar}`
+								}
 								alt=""
 								width={35}
 								height={35}
@@ -73,10 +102,10 @@ export default function Tweets({ tweets }) {
 						</a>
 						<div className={styles['user-info']}>
 							<div className={styles['name-username']}>
-								<a href="" className={styles.fullname}>
+								<a href={`/${tweet.username}`} className={styles.fullname}>
 									<span>{tweet.name + ' ' + tweet.surname}</span>
 								</a>
-								<a href="" className={styles.username}>
+								<a href={`/${tweet.username}`} className={styles.username}>
 									<span>@{tweet.username}</span>
 								</a>
 							</div>
@@ -101,8 +130,7 @@ export default function Tweets({ tweets }) {
 							</div>
 						</div>
 					</div>
-				))
-				.reverse()}
-		</div>
-	);
+				))}
+			</div>
+		);
 }

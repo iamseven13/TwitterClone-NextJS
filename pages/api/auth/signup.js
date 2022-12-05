@@ -48,7 +48,7 @@ async function handler(req, res) {
 			name,
 			surname,
 			email,
-			newUsername,
+			username: newUsername,
 			avatar: sendAvatar,
 			password: encryptedPass,
 		});
