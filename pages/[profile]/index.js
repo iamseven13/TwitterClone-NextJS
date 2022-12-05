@@ -175,6 +175,6 @@ export async function getStaticPaths() {
 			{ params: { profile: 'sevenpayne' } },
 			{ params: { profile: 'charliedongo' } },
 		],
-		fallback: false, // can also be true or 'blocking'
+		fallback: blocking, // can also be true or 'blocking'
 	};
 }
