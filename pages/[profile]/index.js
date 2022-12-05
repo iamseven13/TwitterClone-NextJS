@@ -158,11 +158,11 @@ export async function getStaticProps(context) {
 	return {
 		props: {
 			user: {
-				name: 'data.user.name,',
-				surname: 'data.user.surname,',
+				name: data.user.name,
+				surname: data.user.surname,
 				avatar:
 					'www.gravatar.com/avatar/0ec80989ce27b889868092e028f4fd73?s=200&r=pg&d=mm',
-				username: 'data.user.username,',
+				username: data.user.username,
 			},
 		},
 	};
