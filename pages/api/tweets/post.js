@@ -1,25 +1,37 @@
 import connectToDB from '../../../lib/db';
+import Post from '../../../models/Post';
+import connectDB from '../../../config/db';
+import User from '../../../models/User';
 
 export default async function handler(req, res) {
 	if (req.method === 'POST') {
 		const data = JSON.parse(req.body);
-		console.log(data);
+
+		await connectDB();
+
 		try {
-			const client = await connectToDB();
+			const user = await User.findOne({ username: data.username }).select(
+				'-password'
+			);
 
-			const db = client.db();
+			const { name, username, avatar, surname } = user;
+			console.log(username);
+			if (user) {
+				const newPost = new Post({
+					tweet: data.tweet,
+					name,
+					username: data.username,
+					surname,
+					avatar,
+					user: user._id,
+				});
 
-			const user = await db
-				.collection('tweets')
-
-				.insertOne(data);
-
-			if (!user) {
-				return res.json({ error: 'User does not exist' });
+				const post = await newPost.save();
+				console.log(post);
+				return res.json(post);
+			} else {
+				return res.json('there was a problem');
 			}
-
-			// const { encryptedPass, email, ...others } = user;
-			return res.json({ user });
 		} catch (e) {
 			return res.status(422).json({ msg: 'try again later' });
 		}

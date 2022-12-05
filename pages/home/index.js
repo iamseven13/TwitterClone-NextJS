@@ -4,8 +4,6 @@ import Head from 'next/head';
 import { useSession, getSession } from 'next-auth/react';
 import { getData } from '../../DUMMY_TWEETS';
 
-import { useRouter } from 'next/router';
-
 import SideBarLoggedIn from '../../components/homeUser/SideBarLoggedIn';
 import MiddlePartLoggedIn from '../../components/homeUser/MiddlePartLoggedIn';
 import ThirdPartLoggedIn from '../../components/homeUser/ThirdPartLoggedIn';
@@ -15,12 +13,11 @@ export default function Home(props) {
 	const [isLoading, setIsLoading] = useState(true);
 	const { data: session, status, loading } = useSession();
 
-	const router = useRouter();
-	// Call this function whenever you want to
-	// refresh props!
-	const refreshData = () => {
-		router.replace(router.asPath);
-	};
+	useEffect(() => {
+		if (session) {
+			localStorage.setItem('loggedInUsername', session.token.username);
+		}
+	}, [isLoading]);
 
 	useEffect(() => {
 		getSession().then((session) => {
