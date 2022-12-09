@@ -9,17 +9,19 @@ import { useEffect, useState } from 'react';
 import SideBar from '../../components/homeguest/SideBar';
 import { useRouter } from 'next/router';
 import ThirdPart from '../../components/homeguest/ThirdPart';
+import getAllUsers from '../../lib/getAllUsers';
 
-export default function Profile(props) {
+export default function Profile({ data }) {
 	const [path, setPath] = useState();
 	const [loggedInUsername, setLoggedInUsername] = useState();
 	const [isOwner, setIsOwner] = useState(false);
 	const [isFollowing, setIsFollowing] = useState(false);
-	const [fetchData, setFetchedData] = useState(props);
+	const [fetchData, setFetchedData] = useState(data);
 	const [updateFollowing, setUpdateFollowing] = useState();
 	const { data: session, status } = useSession();
 
 	const [isUserLoggedIn, setIsUserLoggedIn] = useState(Boolean(session));
+	console.log(fetchData);
 
 	let username;
 
@@ -39,7 +41,7 @@ export default function Profile(props) {
 
 	const followRequest = {
 		loggedInUsername,
-		followProfile: user.username,
+		followProfile: user?.username,
 	};
 
 	useEffect(() => {
@@ -132,14 +134,11 @@ export default function Profile(props) {
 export async function getStaticProps(context) {
 	const params = context.params.profile;
 
-	const res = await fetch(
-		`https://twitter-clone-next-2y1d9schs-iamseven13.vercel.app//api/profile/ProfileData`,
-		{
-			method: 'POST',
-			body: params,
-			'Content-Type': 'application/json',
-		}
-	);
+	const res = await fetch(`${process.env.DEV}/api/profile/ProfileData`, {
+		method: 'POST',
+		body: params,
+		'Content-Type': 'application/json',
+	});
 	const data = await res.json();
 
 	// const { name } = data.user;
@@ -149,18 +148,14 @@ export async function getStaticProps(context) {
 
 	return {
 		props: {
-			user: {
-				name: data?.user.name,
-				surname: data?.user.surname,
-				avatar:
-					'www.gravatar.com/avatar/0ec80989ce27b889868092e028f4fd73?s=200&r=pg&d=mm',
-				username: data?.user.username,
-			},
+			data,
 		},
 	};
 }
 
 export async function getStaticPaths() {
+	const data = await getAllUsers();
+
 	console.log(process.env.DEV);
 	return {
 		paths: [
