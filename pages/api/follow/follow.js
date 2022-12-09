@@ -16,25 +16,24 @@ export default async function handler(req, res) {
 			const { loggedInUsername, followingUsername } = dataFollow;
 
 			console.log(loggedInUsername, followingUsername);
-			// const isFollowing = await Follow.find({
-			// 	loggedInUsername,
-			// 	followingUsername,
-			// });
-			// if (isFollowing) {
-			// 	console.log('already following');
-			// }
-			if (user) {
-				const newFollow = new Follow({
-					follower: loggedInUsername,
-					following: followingUsername,
-				});
 
-				const follow = await newFollow.save();
-				console.log(follow);
-				return;
-			} else {
-				console.log('there was a problem');
+			const isFollowing = await Follow.findOne({
+				follower: loggedInUsername,
+				following: followingUsername,
+			});
+
+			if (isFollowing) {
+				return res.json({ msg: 'Already following' });
 			}
+
+			const newFollow = new Follow({
+				follower: loggedInUsername,
+				following: followingUsername,
+			});
+
+			const follow = await newFollow.save();
+			console.log(follow);
+			return res.json(true);
 		} catch (e) {
 			return res.status(422).json({ msg: 'try again later' });
 		}

@@ -2,14 +2,40 @@ import Image from 'next/image';
 import styles from './Tweets.module.css';
 import { useEffect, useState } from 'react';
 
-import { getData } from '../../DUMMY_TWEETS';
+import { useRouter } from 'next/router';
 
 export default function Tweets(props) {
-	const { propsTweets } = props;
-	console.log(props);
+	const { propsTweets, setShowReplyForm, setGatherDataFromPost } = props;
+
 	const [tweets, setAllTweets] = useState(props.tweets.tweets);
 	const [isLoading, setIsloading] = useState(true);
+	const [loggedInUser, setLoggedInUser] = useState();
+	const [loggedInUserId, setLoggedInUserId] = useState();
+	const [isLiked, setIsLiked] = useState(false);
+	const [retweetActionLoading, setRetweetActionLoading] = useState(false);
+	const [startRetweetRequestCount, setstartRetweetRequestCount] = useState(0);
+	const [stopRetweetRequestCount, setStopRetweetRequestCount] = useState(0);
+	const [hasRetweeted, setHasRetweeted] = useState(false);
+
+	const [tweetPost, setTweetPost] = useState();
+
+	// const [allLikes, setAllLikes] = useState([]);
+	const [liked, setLiked] = useState(false);
+	const router = useRouter();
 	console.log(tweets);
+	// useEffect(() => {
+	// 	const data = tweets.map((like) => like.likes);
+	// 	console.log(data);
+	// 	setAllLikes(data);
+	// 	console.log(allLikes);
+	// }, [tweets]);
+
+	// useEffect(() => {
+	// 	setLiked(
+	// 		allLikes.findIndex((like) => (like.username === loggedInUser) !== -1)
+	// 	);
+	// }, []);
+
 	useEffect(() => {
 		if (tweets) {
 			try {
@@ -20,9 +46,89 @@ export default function Tweets(props) {
 
 					const data = await res.json();
 					setAllTweets(data);
+					console.log(data);
 
 					props.setSubmitTweet(false);
 					setIsloading(false);
+				}
+				fetchPosts();
+				setLoggedInUser(localStorage.getItem('loggedInUsername'));
+				setLoggedInUserId(localStorage.getItem('loggedInUserId'));
+			} catch (e) {
+				console.log('cant load tweets');
+			}
+		}
+	}, [props.submitTweet, isLiked, liked]);
+
+	async function handleLikeTweet(e, tweet) {
+		e.preventDefault();
+
+		setLiked(!liked);
+
+		const tweetID = {
+			id: tweet._id,
+			name: loggedInUser,
+			userId: loggedInUserId,
+		};
+
+		console.log(loggedInUserId, loggedInUser);
+
+		try {
+			const res = await fetch('/api/tweets/like', {
+				method: 'POST',
+				body: JSON.stringify(tweetID),
+			});
+
+			const data = await res.json();
+			console.log(data);
+			setIsLiked(!isLiked);
+		} catch (e) {
+			console.log(e.message);
+		}
+	}
+
+	async function handleUnlikeTweet(e, tweet) {
+		e.preventDefault();
+		setLiked(!liked);
+		const tweetID = { id: tweet._id, loggedInUser, userId: tweet.user };
+
+		try {
+			const res = await fetch('/api/tweets/unlike', {
+				method: 'POST',
+				body: JSON.stringify(tweetID),
+			});
+
+			const data = await res.json();
+			console.log(data);
+			setIsLiked(!isLiked);
+		} catch (e) {
+			console.log(e.message);
+		}
+	}
+
+	function handleReplyTweet(e, tweetPost) {
+		e.preventDefault();
+
+		setShowReplyForm(true);
+		setGatherDataFromPost(tweetPost);
+	}
+
+	useEffect(() => {
+		if (startRetweetRequestCount) {
+			try {
+				const tweetID = {
+					id: tweetPost._id,
+					name: loggedInUser,
+					userId: loggedInUserId,
+				};
+				async function fetchPosts() {
+					const res = await fetch('/api/tweets/retweet', {
+						method: 'POST',
+						body: JSON.stringify(tweetID),
+					});
+
+					setHasRetweeted(true);
+					const data = await res.json();
 					console.log(data);
 				}
 				fetchPosts();
@@ -30,56 +136,17 @@ export default function Tweets(props) {
 				console.log('cant load tweets');
 			}
 		}
-	}, [props.submitTweet]);
+	}, [startRetweetRequestCount]);
+
+	async function handleRetweetTweet(e, tweetPost) {
+		setstartRetweetRequestCount(startRetweetRequestCount + 1);
+		setTweetPost(tweetPost);
+	}
 
 	if (!tweets) {
 		return (
 			<div className={styles.tweets}>
-				<div className={styles['user-tweet']}>
-					<a href="">
-						<Image
-							src=""
-							alt=""
-							width={35}
-							height={35}
-							className={styles['image-textarea-user']}
-						/>{' '}
-					</a>
-					<div className={styles['user-info']}>
-						<div className={styles['name-username']}>
-							<a href="" className={styles.fullname}>
-								<span>RapidAPI</span>
-							</a>
-							<a href="" className={styles.username}>
-								<span>@rapid_API</span>
-							</a>
-						</div>
-						<div className={styles['tweet-info']}>
-							<a href="">
-								<p>
-									Lorem ipsum dolor sit amet consectetur adipisicing elit.
-									Excepturi expedita voluptatum magnam a, quod sequi ipsam in
-									cumque iusto suscipit doloribus sit molestiae blanditiis
-									deleniti corrupti veniam illum nemo neque?
-								</p>
-							</a>
-						</div>
-						<div className={styles.icons}>
-							<a href="">
-								<img src="./images/chat.svg" alt="" />
-							</a>
-							<a href="">
-								<img src="./images/retweet.svg" alt="" />
-							</a>
-							<a href="">
-								<img src="./images/heart.svg" alt="" />
-							</a>
-							<a href="">
-								<img src="./images/download.svg" alt="" />
-							</a>
-						</div>
-					</div>
-				</div>
+				<p>Loading</p>
 			</div>
 		);
 	}
@@ -88,7 +155,7 @@ export default function Tweets(props) {
 		return (
 			<div className={styles.tweets}>
 				{tweets.map((tweet) => (
-					<div className={styles['user-tweet']}>
+					<div key={Math.random()} className={styles['user-tweet']}>
 						<a href="">
 							<Image
 								src={
@@ -110,23 +177,79 @@ export default function Tweets(props) {
 								</a>
 							</div>
 							<div className={styles['tweet-info']}>
-								<a href="">
+								<a href={`/post/${tweet._id}`}>
 									<p>{tweet.tweet}</p>
 								</a>
 							</div>
 							<div className={styles.icons}>
-								<a href="">
+								<a
+									className={styles.comments}
+									onClick={(e) => handleReplyTweet(e, tweet)}
+								>
 									<img src="./images/chat.svg" alt="" />
+									{tweet.comments?.length > 0 ? (
+										<span>{tweet.comments?.length} </span>
+									) : (
+										''
+									)}
 								</a>
-								<a href="">
-									<img src="./images/retweet.svg" alt="" />
-								</a>
-								<a href="">
-									<img src="./images/heart.svg" alt="" />
-								</a>
-								<a href="">
-									<img src="./images/download.svg" alt="" />
-								</a>
+
+								{tweet.retweets?.findIndex(
+									(retweet) => retweet.username === loggedInUser
+								) === -1 ? (
+									<a
+										className={styles.retweets}
+										onClick={(e) => handleRetweetTweet(e, tweet)}
+									>
+										<img src="./images/retweet.svg" alt="" />
+										{tweet.retweets?.length > 0 ? (
+											<span>{tweet.retweets?.length}</span>
+										) : (
+											''
+										)}
+									</a>
+								) : (
+									<a
+										className={styles.retweets}
+										onClick={(e) => handleUnRetweetTweet(e, tweet)}
+									>
+										<img src="./images/retweet-green.svg" alt="" />
+										{tweet.retweets?.length > 0 ? (
+											<span>{tweet.retweets?.length}</span>
+										) : (
+											''
+										)}
+									</a>
+								)}
+
+								{tweet.likes?.findIndex(
+									(like) => like.username === loggedInUser
+								) === -1 ? (
+									<a
+										className={styles.likes}
+										onClick={(e) => handleLikeTweet(e, tweet)}
+									>
+										<img src="./images/heart.svg" alt="" />
+
+										{tweet.likes?.length > 0 ? (
+											<span>{tweet.likes?.length}</span>
+										) : (
+											''
+										)}
+									</a>
+								) : (
+									<a
+										className={styles.likes}
+										onClick={(e) => handleUnlikeTweet(e, tweet)}
+									>
+										<img src="./images/heart-red.svg" alt="" />
+										{tweet.likes?.length > 0 ? (
+											<span>{tweet.likes?.length}</span>
+										) : (
+											''
+										)}
+									</a>
+								)}
 							</div>
 						</div>
 					</div>

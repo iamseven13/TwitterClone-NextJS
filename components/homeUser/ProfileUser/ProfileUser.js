@@ -7,7 +7,14 @@ import styles2 from '../Tweets.module.css';
 
 export default function ProfileUser(props) {
 	// const [allData, setData] = useState();
-	const { fetchData, isOwner, loggedInUsername, isFollowing } = props;
+	const {
+		fetchData,
+		isOwner,
+		loggedInUsername,
+		isFollowing,
+		setUpdateFollowing,
+		updateFollowing,
+	} = props;
 
 	const [avatarPic, setAvatarPic] = useState();
 
@@ -32,10 +39,35 @@ export default function ProfileUser(props) {
 			method: 'POST',
 			body: JSON.stringify(data),
 		});
+		const dataRes = await res.json();
+		setUpdateFollowing(true);
+		console.log(dataRes);
+	}
+
+	async function handleUnfollow(e) {
+		const data = {
+			loggedInUsername: loggedInUsername,
+			followingUsername: username,
+		};
+
+		e.preventDefault();
+		const res = await fetch('/api/follow/unfollow', {
+			method: 'POST',
+			body: JSON.stringify(data),
+		});
+
+		const dataRes = await res.json();
+
+		setUpdateFollowing(false);
+		console.log(dataRes);
 	}
 
 	if (!fetchData) {
-		return <p>Loading</p>;
+		return (
+			<div className={styles['profile-container']}>
+				<p>Loading</p>
+			</div>
+		);
 	}
 
 	return (
@@ -68,12 +100,20 @@ export default function ProfileUser(props) {
 						/>
 					</div>
 					{isOwner ? <button className={styles.btn}>Edit Profile</button> : ''}
-					{!isOwner ? (
+					{!isOwner && !isFollowing && !updateFollowing ? (
+						<button onClick={handleFollow} className={styles.btn}>
+							Follow
+						</button>
+					) : (
+						''
+					)}
+
+					{isFollowing || updateFollowing ? (
 						<button
-							onClick={handleFollow}
+							onClick={handleUnfollow}
 							className={styles.btn + ' ' + styles.btnUnfollow}
 						>
-							{isFollowing ? 'Unfollow' : 'Follow'}
+							Unfollow
 						</button>
 					) : (
 						''

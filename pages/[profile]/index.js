@@ -18,7 +18,7 @@ export default function Profile(props) {
 	const [isOwner, setIsOwner] = useState(false);
 	const [isFollowing, setIsFollowing] = useState(false);
 	const [fetchData, setFetchedData] = useState(props);
-
+	const [updateFollowing, setUpdateFollowing] = useState();
 	const { data: session, status } = useSession();
 
 	const [isUserLoggedIn, setIsUserLoggedIn] = useState(Boolean(session));
@@ -56,6 +56,7 @@ export default function Profile(props) {
 				});
 				const data = await res.json();
 				setIsFollowing(data.isFollowing);
+				console.log(data);
 			} catch (e) {
 				console.log(e.message);
 			}
@@ -105,7 +106,7 @@ export default function Profile(props) {
 			}
 		}
 		fetchData();
-	}, []);
+	}, [isFollowing, updateFollowing]);
 
 	console.log(fetchData);
 
@@ -127,6 +128,8 @@ export default function Profile(props) {
 					isOwner={isOwner}
 					loggedInUsername={loggedInUsername}
 					isFollowing={isFollowing}
+					setUpdateFollowing={setUpdateFollowing}
+					updateFollowing={updateFollowing}
 				/>
 
 				{!isUserLoggedIn ? (
@@ -169,12 +172,17 @@ export async function getStaticProps(context) {
 }
 
 export async function getStaticPaths() {
+	const res = await fetch('/api/users/getallusers');
+	const data = await res.json();
+
+	const usernames = data.map((user) => user.username);
+
+	const params = usernames.map((username) => ({
+		params: { profile: username },
+	}));
+
 	return {
-		paths: [
-			{ params: { profile: 'sevenbambi' } },
-			{ params: { profile: 'sevenpayne' } },
-			{ params: { profile: 'charliedongo' } },
-		],
-		fallback: blocking, // can also be true or 'blocking'
+		paths: params,
+		fallback: false, // can also be true or 'blocking'
 	};
 }

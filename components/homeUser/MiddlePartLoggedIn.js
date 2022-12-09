@@ -4,7 +4,12 @@ import styles from './MiddlePartLoggedIn.module.css';
 
 import Tweets from './Tweets';
 import { useEffect, useState } from 'react';
-export default function MiddlePartLoggedIn({ tweets }) {
+import Reply from './Modals/Reply';
+export default function MiddlePartLoggedIn({
+	tweets,
+	setShowReplyForm,
+	setGatherDataFromPost,
+}) {
 	const [avatarPic, setAvatarPic] = useState();
 
 	const { data: session, status, loading } = useSession();
@@ -86,17 +91,17 @@ export default function MiddlePartLoggedIn({ tweets }) {
 							value={tweet}
 						/>
 						<div className={styles.icons}>
-							<div className={styles.AllIcons}>
-								<a href="">
+							<div className={styles.AllIcons + ' ' + styles.disabledBtn}>
+								<a>
 									<img src="./images/explore.svg" alt="" />
 								</a>
-								<a href="">
+								<a>
 									<img src="./images/user.svg" alt="" />
 								</a>
-								<a href="">
+								<a>
 									<img src="./images/list.svg" alt="" />
 								</a>
-								<a href="">
+								<a>
 									<img src="./images/more.svg" alt="" />
 								</a>
 							</div>
@@ -107,7 +112,7 @@ export default function MiddlePartLoggedIn({ tweets }) {
 			</div>
 
 			<div className={styles['new-tweets']}>
-				<a className={styles['show-more']} href="#">
+				<a className={styles['show-more'] + ' ' + styles.disabledBtn}>
 					Show 105 Tweets
 				</a>
 			</div>
@@ -115,6 +120,8 @@ export default function MiddlePartLoggedIn({ tweets }) {
 				tweets={tweets}
 				submitTweet={submitTweet}
 				setSubmitTweet={setSubmitTweet}
+				setShowReplyForm={setShowReplyForm}
+				setGatherDataFromPost={setGatherDataFromPost}
 			/>
 		</div>
 	);

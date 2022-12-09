@@ -41,6 +41,7 @@ export default NextAuth({
 					surname: user.surname,
 					avatar: user.avatar,
 					username: user.username,
+					loggedInUserId: user._id,
 				};
 			},
 		}),

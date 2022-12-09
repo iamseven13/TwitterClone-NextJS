@@ -30,6 +30,9 @@ const PostSchema = new Schema({
 				type: Schema.Types.ObjectId,
 				ref: 'users',
 			},
+			username: {
+				type: String,
+			},
 		},
 	],
 	comments: [
@@ -43,10 +46,22 @@ const PostSchema = new Schema({
 			},
 			name: { type: String },
 			surname: { type: String },
+			username: { type: String },
 			avatar: { type: String },
 			date: {
 				type: Date,
 				default: Date.now,
+			},
+		},
+	],
+	retweets: [
+		{
+			user: {
+				type: Schema.Types.ObjectId,
+				ref: 'users',
+			},
+			username: {
+				type: String,
 			},
 		},
 	],
