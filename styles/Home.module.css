@@ -265,6 +265,11 @@
 	display: flex;
 }
 
+/* Disabled Button*/
+.disabledBtn {
+	cursor: not-allowed;
+}
+
 /* MOBILE*/
 
 @media only screen and (max-width: 780px) {

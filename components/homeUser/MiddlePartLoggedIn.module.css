@@ -112,3 +112,7 @@
 	height: 100%;
 	padding: 1rem 5rem;
 }
+
+.disabledBtn {
+	cursor: not-allowed;
+}

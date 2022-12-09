@@ -8,6 +8,8 @@ export default function SideBarLoggedIn({ styles, user, setIsUserLoggedIn }) {
 		console.log(session);
 
 		localStorage.removeItem('loggedInUsername');
+		localStorage.removeItem('loggedInUserId');
+		localStorage.removeIteme('loggedInAvatar');
 	}
 
 	let username;
@@ -37,7 +39,7 @@ export default function SideBarLoggedIn({ styles, user, setIsUserLoggedIn }) {
 					</li>
 
 					<li>
-						<a className={styles.navlinks} href="/explore">
+						<a className={styles.navlinks + ' ' + styles.disabledBtn}>
 							{' '}
 							<img src="/images/explore.svg" alt="" />
 							Explore
@@ -45,42 +47,42 @@ export default function SideBarLoggedIn({ styles, user, setIsUserLoggedIn }) {
 					</li>
 
 					<li>
-						<a className={styles.navlinks} href="/explore">
+						<a className={styles.navlinks + ' ' + styles.disabledBtn}>
 							{' '}
 							<img src="/images/bell.svg" alt="" />
 							Notifications
 						</a>
 					</li>
 					<li>
-						<a className={styles.navlinks} href="/explore">
+						<a className={styles.navlinks + ' ' + styles.disabledBtn}>
 							{' '}
 							<img src="/images/message.svg" alt="" />
 							Messages
 						</a>
 					</li>
 					<li>
-						<a className={styles.navlinks} href="/explore">
+						<a className={styles.navlinks + ' ' + styles.disabledBtn}>
 							{' '}
 							<img src="/images/bookmark.svg" alt="" />
 							Bookmarks
 						</a>
 					</li>
 					<li>
-						<a className={styles.navlinks} href="/explore">
+						<a className={styles.navlinks + ' ' + styles.disabledBtn}>
 							{' '}
 							<img src="/images/list.svg" alt="" />
 							Lists
 						</a>
 					</li>
 					<li>
-						<a className={styles.navlinks} href={username}>
+						<a className={styles.navlinks} href={`/${username}`}>
 							{' '}
 							<img src="/images/user.svg" alt="" />
 							Profile
 						</a>
 					</li>
 					<li>
-						<a className={styles.navlinks} href="/explore">
+						<a className={styles.navlinks + ' ' + styles.disabledBtn}>
 							{' '}
 							<img src="/images/more.svg" alt="" />
 							More

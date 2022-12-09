@@ -1,0 +1,205 @@
+.post-container {
+	flex: 1.2;
+	max-width: 33vw;
+
+	font-size: 1.4rem;
+	color: white;
+	border-left: 0.1px solid #2d4153;
+	border-right: 0.1px solid #2d4153;
+}
+
+.post-header {
+	display: flex;
+	color: #e7e9ea;
+	margin-left: 1rem;
+	align-items: center;
+}
+
+.post-header h3 {
+	font-size: 1.7rem;
+}
+
+.post-user {
+	margin-bottom: 0.5rem;
+	margin-left: 3rem;
+}
+
+.post-header a {
+	margin: 0;
+}
+
+.post-user span {
+	margin: 0;
+	padding: 0;
+}
+
+.user-tweet {
+	display: flex;
+	color: white;
+	font-size: 1.5rem;
+	margin-bottom: 2rem;
+	border-bottom: 0.1px solid #2d4153;
+}
+
+.name-username {
+	display: flex;
+	margin-left: 1rem;
+}
+
+.fullname {
+	font-weight: 500;
+}
+
+.username {
+	color: gray;
+	margin-left: 0.5rem;
+}
+
+.user-info {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	width: 100%;
+}
+
+.tweet-info {
+	margin-left: 1rem;
+}
+.tweet-info p {
+	margin: 0;
+	margin-top: 0.3rem;
+}
+
+.allIcons {
+	display: flex;
+	justify-content: space-between;
+	margin-left: 1rem;
+	width: 80%;
+	margin-top: 2rem;
+	cursor: pointer;
+	padding-bottom: 1rem;
+}
+
+.allIcons img {
+	width: 18px;
+	height: 18 px;
+	margin-right: 2rem;
+}
+
+.likes,
+.comments,
+.retweets {
+	display: flex;
+	align-items: center;
+	font-size: 1.2rem;
+	color: gray;
+}
+
+.likes:hover {
+	color: red;
+	font-weight: 500;
+}
+
+.comments:hover {
+	color: rgb(70, 176, 247);
+	font-weight: 500;
+}
+
+.retweets:hover {
+	color: rgb(70, 247, 194);
+	font-weight: 500;
+}
+
+.image-textarea-user {
+	margin-left: 1.5rem;
+	border-radius: 50%;
+
+	object-fit: cover;
+	width: 40px;
+	height: 40px;
+}
+
+.user-replying {
+	padding: 1rem 2rem;
+	display: flex;
+}
+
+.user-replying img {
+	border-radius: 50%;
+	object-fit: cover;
+	width: 40px;
+	height: 40px;
+}
+
+.user-replying form {
+	width: 100%;
+	height: 14vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.textarea {
+	resize: none;
+	background-color: transparent;
+	height: 100%;
+	width: 100%;
+	color: white;
+	padding: 1rem;
+	border: none;
+	font-size: 1.7rem;
+	font-weight: normal;
+}
+
+.textarea:focus {
+	outline: none;
+}
+
+.textarea::placeholder {
+	font-size: 1.65rem;
+}
+
+.icons {
+	display: flex;
+	justify-content: space-between;
+}
+
+.icons img {
+	width: 22px;
+	height: 22px;
+
+	margin-right: 2rem;
+}
+.btn {
+	padding: 0.5rem 1rem;
+	border: none;
+	font-size: 1.8rem;
+	border-radius: 3rem;
+	cursor: pointer;
+	background: #1d9bf0;
+	color: white;
+	transition: all 0.5s ease-in-out;
+}
+
+.btn:hover {
+	background: #69bbf1;
+}
+
+.replying-to span {
+	color: gray;
+}
+
+.commenter {
+	margin-top: 1rem;
+	border-top: 0.1px solid #2d4153;
+}
+
+.user {
+	margin-top: 1rem;
+}
+
+.replyingtoUser {
+	margin-left: 1rem;
+	color: gray;
+	margin-bottom: 0.5rem;
+}
