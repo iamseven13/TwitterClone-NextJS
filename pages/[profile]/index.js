@@ -147,11 +147,14 @@ export async function getStaticProps(context) {
 	console.log(process.env.DEV);
 
 	try {
-		const res = await fetch('/api/profile/ProfileData', {
-			method: 'POST',
-			body: params,
-			'Content-Type': 'application/json',
-		});
+		const res = await fetch(
+			'https://twitter-clone-next-l18u3grzk-iamseven13.vercel.app/api/profile/ProfileData',
+			{
+				method: 'POST',
+				body: params,
+				'Content-Type': 'application/json',
+			}
+		);
 		const data = await res.json();
 		console.log(data);
 	} catch (e) {
