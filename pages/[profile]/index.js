@@ -11,7 +11,6 @@ import { useRouter } from 'next/router';
 import ThirdPart from '../../components/homeguest/ThirdPart';
 
 export default function Profile(props) {
-	console.log(props);
 	const [path, setPath] = useState();
 	const [loggedInUsername, setLoggedInUsername] = useState();
 	const [isOwner, setIsOwner] = useState(false);
@@ -30,13 +29,10 @@ export default function Profile(props) {
 		const loggedIn = localStorage.getItem('loggedInUsername');
 		setLoggedInUsername(loggedIn);
 		if (fetchData && loggedIn) {
-			console.log(path);
 			if (fetchData.user.username === loggedInUsername) {
 				setIsOwner(true);
-				console.log('owner');
 			} else {
 				setIsOwner(false);
-				console.log('not owner');
 			}
 		}
 	}, [path, fetchData]);
@@ -55,7 +51,6 @@ export default function Profile(props) {
 				});
 				const data = await res.json();
 				setIsFollowing(data.isFollowing);
-				console.log(data);
 			} catch (e) {
 				console.log(e.message);
 			}
@@ -67,11 +62,8 @@ export default function Profile(props) {
 		const path = window.location.pathname.split('/')[1];
 		setPath(path);
 
-		console.log(`this is ${session}`);
-
 		if (session) {
 			setIsUserLoggedIn(true);
-			console.log(path);
 		} else {
 			setIsUserLoggedIn(false);
 		}
@@ -80,7 +72,6 @@ export default function Profile(props) {
 	useEffect(() => {
 		async function fetchData() {
 			const path = window.location.pathname.split('/')[1];
-			console.log(path);
 
 			if (path) {
 				try {
@@ -90,9 +81,8 @@ export default function Profile(props) {
 						'Content-Type': 'application/json',
 					});
 					const data = await res.json();
-					console.log(data);
+
 					setFetchedData(data);
-					console.log(data);
 
 					if (data.error) {
 						console.log(data.error);
@@ -106,8 +96,6 @@ export default function Profile(props) {
 		}
 		fetchData();
 	}, [isFollowing, updateFollowing]);
-
-	console.log(fetchData);
 
 	return (
 		<div className={styles.container}>
@@ -144,22 +132,15 @@ export default function Profile(props) {
 export async function getStaticProps(context) {
 	const params = context.params.profile;
 
-	console.log(process.env.DEV);
-
-	try {
-		const res = await fetch(
-			'https://twitter-clone-next-l18u3grzk-iamseven13.vercel.app/api/profile/ProfileData',
-			{
-				method: 'POST',
-				body: params,
-				'Content-Type': 'application/json',
-			}
-		);
-		const data = await res.json();
-		console.log(data);
-	} catch (e) {
-		console.log(e.message);
-	}
+	const res = await fetch(
+		`https://twitter-clone-next-fs117s2rn-iamseven13.vercel.app/api/profile/ProfileData`,
+		{
+			method: 'POST',
+			body: params,
+			'Content-Type': 'application/json',
+		}
+	);
+	const data = await res.json();
 
 	// const { name } = data.user;
 	// if (!name) {
@@ -169,11 +150,11 @@ export async function getStaticProps(context) {
 	return {
 		props: {
 			user: {
-				name: data.user.name,
-				surname: data.user.surname,
+				name: data?.user.name,
+				surname: data?.user.surname,
 				avatar:
 					'www.gravatar.com/avatar/0ec80989ce27b889868092e028f4fd73?s=200&r=pg&d=mm',
-				username: data.user.username,
+				username: data?.user.username,
 			},
 		},
 	};
