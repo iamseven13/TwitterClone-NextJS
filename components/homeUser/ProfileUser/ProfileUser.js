@@ -1,5 +1,6 @@
 import { useSession } from 'next-auth/react';
 import { useState, useEffect, useRef } from 'react';
+import { useRouter } from 'next/router';
 
 import Image from 'next/image';
 import styles from './ProfileUser.module.css';
@@ -19,15 +20,31 @@ export default function ProfileUser(props) {
 	const [avatarPic, setAvatarPic] = useState();
 
 	const { username } = fetchData.user;
-
+	const [profilePosts, setProfilePosts] = useState();
 	const { data: session, status, loading } = useSession();
+
 	useEffect(() => {
 		if (session) {
 			setAvatarPic(session.token.avatar);
 		}
 	}, []);
 
-	console.log(username);
+	useEffect(() => {
+		async function fetchUserPosts() {
+			const res = await fetch('/api/profile/ProfilePosts', {
+				method: 'POST',
+				body: JSON.stringify({ username }),
+			});
+
+			const data = await res.json();
+			setProfilePosts(data);
+		}
+
+		fetchUserPosts();
+	}, [username]);
+
+	console.log(profilePosts);
+
 	async function handleFollow(e) {
 		const data = {
 			loggedInUsername: loggedInUsername,
@@ -69,6 +86,8 @@ export default function ProfileUser(props) {
 			</div>
 		);
 	}
+
+	console.log(fetchData);
 
 	return (
 		<div className={styles['profile-container']}>
@@ -120,7 +139,6 @@ export default function ProfileUser(props) {
 					)}
 				</div>
 			</div>
-
 			<div className={styles['profile-desc']}>
 				<div className={styles['profile-names']}>
 					<h3>
@@ -139,7 +157,6 @@ export default function ProfileUser(props) {
 					</div>
 				</div>
 			</div>
-
 			<div className={styles['followers-following']}>
 				<a href="" className={styles['following']}>
 					<span className={styles['following-count']}>298</span>
@@ -150,7 +167,6 @@ export default function ProfileUser(props) {
 					<span className={styles['followers-text']}>Followers</span>
 				</a>
 			</div>
-
 			<div className={styles['profile-tabs']}>
 				<div className={styles['tabs']}>
 					<a href="/tweets">
@@ -173,56 +189,55 @@ export default function ProfileUser(props) {
 					</a>
 				</div>
 			</div>
-
 			<div className={styles2.tweets}>
-				<div className={styles2['user-tweet']}>
-					<a href="">
-						<Image
-							src={`https://${fetchData.user.avatar}`}
-							alt=""
-							width={45}
-							height={45}
-							className={styles2['image-textarea-user']}
-						/>{' '}
-					</a>
-					<div className={styles2['user-info']}>
-						<div className={styles2['name-username']}>
-							<a href="" className={styles2.fullname}>
-								<span>
-									{fetchData.user.name} {fetchData.user.surname}
-								</span>
-							</a>
-							<a href="" className={styles2.username}>
-								<span>@{fetchData.user.username}</span>
-							</a>
-						</div>
-						<div className={styles2['tweet-info']}>
-							<a href="">
-								<p>
-									Lorem ipsum dolor sit amet consectetur adipisicing elit.
-									Excepturi expedita voluptatum magnam a, quod sequi ipsam in
-									cumque iusto suscipit doloribus sit molestiae blanditiis
-									deleniti corrupti veniam illum nemo neque?
-								</p>
-							</a>
-						</div>
-						<div className={styles2.icons}>
-							<a href="">
-								<img src="./images/chat.svg" alt="" />
-							</a>
-							<a href="">
-								<img src="./images/retweet.svg" alt="" />
-							</a>
-							<a href="">
-								<img src="./images/heart.svg" alt="" />
-							</a>
-							<a href="">
-								<img src="./images/download.svg" alt="" />
-							</a>
-						</div>
-					</div>
-				</div>
+				{!profilePosts
+					? 'This user has no posts'
+					: profilePosts.map((post) => (
+							<div className={styles2['user-tweet']}>
+								<a href="">
+									<Image
+										src={`https://${fetchData.user.avatar}`}
+										alt=""
+										width={45}
+										height={45}
+										className={styles2['image-textarea-user']}
+									/>{' '}
+								</a>
+								<div className={styles2['user-info']}>
+									<div className={styles2['name-username']}>
+										<a href="" className={styles2.fullname}>
+											<span>
+												{fetchData.user.name} {fetchData.user.surname}
+											</span>
+										</a>
+										<a href="" className={styles2.username}>
+											<span>@{fetchData.user.username}</span>
+										</a>
+									</div>
+									<div className={styles2['tweet-info']}>
+										<a href={`/post/${post._id}`}>
+											<p>{post.tweet}</p>
+										</a>
+									</div>
+									<div className={styles2.icons}>
+										<a href="">
+											<img src="./images/chat.svg" alt="" />
+										</a>
+										<a href="">
+											<img src="./images/retweet.svg" alt="" />
+										</a>
+										<a href="">
+											<img src="./images/heart.svg" alt="" />
+										</a>
+										<a href="">
+											<img src="./images/download.svg" alt="" />
+										</a>
+									</div>
+								</div>
+							</div>
+					  ))}
 			</div>
+			;
 		</div>
 	);
 }
