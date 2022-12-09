@@ -18,7 +18,7 @@ export default function ProfileUser(props) {
 	} = props;
 
 	const [avatarPic, setAvatarPic] = useState();
-
+	const [profileUser, setProfileUser] = useState(fetchData);
 	const { username } = fetchData.user;
 	const [profilePosts, setProfilePosts] = useState();
 	const { data: session, status, loading } = useSession();
@@ -43,7 +43,21 @@ export default function ProfileUser(props) {
 		fetchUserPosts();
 	}, [username]);
 
-	console.log(profilePosts);
+	useEffect(() => {
+		async function fetchUserData() {
+			const res = await fetch('/api/profile/ProfileData', {
+				method: 'POST',
+				body: username,
+			});
+
+			const data = await res.json();
+			setProfileUser(data);
+		}
+
+		fetchUserData();
+	}, [username]);
+
+	console.log(profileUser);
 
 	async function handleFollow(e) {
 		const data = {
@@ -79,15 +93,13 @@ export default function ProfileUser(props) {
 		console.log(dataRes);
 	}
 
-	if (!fetchData) {
+	if (!profileUser) {
 		return (
 			<div className={styles['profile-container']}>
 				<p>Loading</p>
 			</div>
 		);
 	}
-
-	console.log(fetchData);
 
 	return (
 		<div className={styles['profile-container']}>
@@ -97,7 +109,7 @@ export default function ProfileUser(props) {
 				</a>
 				<div className={styles['profile-user']}>
 					<h3>
-						{fetchData.user.name} {fetchData.user.surname}
+						{profileUser?.user?.name} {profileUser?.user?.surname}
 					</h3>
 					<span>604 Tweets</span>
 				</div>
@@ -112,7 +124,6 @@ export default function ProfileUser(props) {
 				<div className={styles['profile-picture']}>
 					<div className={styles.picture}>
 						<Image
-							src={`https://${fetchData.user.avatar}`}
 							className={styles['profile-image']}
 							width={'170'}
 							height={100}
@@ -142,9 +153,9 @@ export default function ProfileUser(props) {
 			<div className={styles['profile-desc']}>
 				<div className={styles['profile-names']}>
 					<h3>
-						{fetchData.user.name} {fetchData.user.surname}
+						{profileUser?.user?.name} {profileUser?.user?.surname}
 					</h3>
-					<span>@{fetchData.user.username}</span>
+					<span>@{profileUser?.user?.username}</span>
 				</div>
 				<div className={styles.location}>
 					<div className={styles['location-country']}>
@@ -196,7 +207,6 @@ export default function ProfileUser(props) {
 							<div className={styles2['user-tweet']}>
 								<a href="">
 									<Image
-										src={`https://${fetchData.user.avatar}`}
 										alt=""
 										width={45}
 										height={45}
@@ -207,11 +217,11 @@ export default function ProfileUser(props) {
 									<div className={styles2['name-username']}>
 										<a href="" className={styles2.fullname}>
 											<span>
-												{fetchData.user.name} {fetchData.user.surname}
+												{profileUser?.user?.name} {profileUser?.user?.surname}
 											</span>
 										</a>
 										<a href="" className={styles2.username}>
-											<span>@{fetchData.user.username}</span>
+											<span>@{profileUser?.user?.username}</span>
 										</a>
 									</div>
 									<div className={styles2['tweet-info']}>

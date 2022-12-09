@@ -21,7 +21,8 @@ export default function Profile({ data }) {
 	const { data: session, status } = useSession();
 
 	const [isUserLoggedIn, setIsUserLoggedIn] = useState(Boolean(session));
-	console.log(fetchData);
+
+	console.log(data);
 
 	let username;
 
