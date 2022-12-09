@@ -1,6 +1,5 @@
 import { useSession, getSession } from 'next-auth/react';
 
-import useSWR from 'swr';
 import SideBarLoggedIn from '../../components/homeUser/SideBarLoggedIn';
 import ThirdPartLoggedIn from '../../components/homeUser/ThirdPartLoggedIn';
 import ProfileUser from '../../components/homeUser/ProfileUser/ProfileUser';
@@ -145,7 +144,9 @@ export default function Profile(props) {
 export async function getStaticProps(context) {
 	const params = context.params.profile;
 
-	const res = await fetch('http://localhost:3000/api/profile/ProfileData', {
+	console.log(process.env.DEV);
+
+	const res = await fetch('/api/profile/ProfileData', {
 		method: 'POST',
 		body: params,
 		'Content-Type': 'application/json',
@@ -172,17 +173,13 @@ export async function getStaticProps(context) {
 }
 
 export async function getStaticPaths() {
-	const res = await fetch('/api/users/getallusers');
-	const data = await res.json();
-
-	const usernames = data.map((user) => user.username);
-
-	const params = usernames.map((username) => ({
-		params: { profile: username },
-	}));
-
+	console.log(process.env.DEV);
 	return {
-		paths: params,
+		paths: [
+			{ params: { profile: 'sevenbambi' } },
+			{ params: { profile: 'sevenpayne' } },
+			{ params: { profile: 'charliedongo' } },
+		],
 		fallback: false, // can also be true or 'blocking'
 	};
 }
