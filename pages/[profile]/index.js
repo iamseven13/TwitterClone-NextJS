@@ -133,7 +133,7 @@ export async function getStaticProps(context) {
 	const params = context.params.profile;
 
 	const res = await fetch(
-		`https://twitter-clone-next-fs117s2rn-iamseven13.vercel.app/api/profile/ProfileData`,
+		`https://twitter-clone-next-2y1d9schs-iamseven13.vercel.app//api/profile/ProfileData`,
 		{
 			method: 'POST',
 			body: params,
