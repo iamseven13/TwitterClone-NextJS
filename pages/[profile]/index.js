@@ -172,12 +172,17 @@ export async function getStaticProps(context) {
 }
 
 export async function getStaticPaths() {
+	const res = await fetch('/api/users/getallusers');
+	const data = await res.json();
+
+	const usernames = data.map((user) => user.username);
+
+	const params = usernames.map((username) => ({
+		params: { profile: username },
+	}));
+
 	return {
-		paths: [
-			{ params: { profile: 'sevenbambi' } },
-			{ params: { profile: 'sevenpayne' } },
-			{ params: { profile: 'charliedongo' } },
-		],
+		paths: params,
 		fallback: false, // can also be true or 'blocking'
 	};
 }

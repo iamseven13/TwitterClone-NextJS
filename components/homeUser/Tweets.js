@@ -211,7 +211,7 @@ export default function Tweets(props) {
 								) : (
 									<a
 										className={styles.retweets}
-										onClick={(e) => handleRetweetTweet(e, tweet)}
+										onClick={(e) => handleUnRetweetTweet(e, tweet)}
 									>
 										<img src="./images/retweet-green.svg" alt="" />
 										{tweet.retweets?.length > 0 ? (
