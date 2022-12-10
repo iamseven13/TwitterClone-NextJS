@@ -3,6 +3,7 @@ import connectDB from '../../../config/db';
 
 export default async function handler(req, res) {
 	await connectDB();
+	console.log(req.body);
 	const username = req.body;
 	if (req.method === 'POST') {
 		try {

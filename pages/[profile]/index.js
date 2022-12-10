@@ -10,6 +10,7 @@ import SideBar from '../../components/homeguest/SideBar';
 import { useRouter } from 'next/router';
 import ThirdPart from '../../components/homeguest/ThirdPart';
 import getAllUsers from '../../lib/getAllUsers';
+import getUser from '../../lib/getuser';
 
 export default function Profile({ data }) {
 	const [path, setPath] = useState();
@@ -134,18 +135,26 @@ export default function Profile({ data }) {
 
 export async function getStaticProps(context) {
 	const params = context.params.profile;
+	// let data;
 
-	const res = await fetch(`${process.env.DEV}/api/profile/ProfileData`, {
-		method: 'POST',
-		body: params,
-		'Content-Type': 'application/json',
-	});
-	const data = await res.json();
-
-	// const { name } = data.user;
-	// if (!name) {
-	// 	return <h1>DATA NOT HERE</h1>;
+	// try {
+	// 	const res = await fetch(`${process.env.DEV}/api/profile/ProfileData`, {
+	// 		method: 'POST',
+	// 		body: params,
+	// 		'Content-Type': 'application/json',
+	// 	});
+	// 	data = await res.json();
+	// } catch (e) {
+	// 	console.log(e.message);
 	// }
+	// // const { name } = data.user;
+	// // if (!name) {
+	// // 	return <h1>DATA NOT HERE</h1>;
+	// // }
+
+	const data = await getUser(params);
+	console.log(data);
+	// const data = JSON.parse(dataAll);
 
 	return {
 		props: {
@@ -157,13 +166,11 @@ export async function getStaticProps(context) {
 export async function getStaticPaths() {
 	const data = await getAllUsers();
 
-	console.log(process.env.DEV);
+	const profiles = data.map((profile) => profile.username);
+	const params = profiles.map((profile) => ({ params: { profile } }));
+	console.log(params);
 	return {
-		paths: [
-			{ params: { profile: 'sevenbambi' } },
-			{ params: { profile: 'sevenpayne' } },
-			{ params: { profile: 'charliedongo' } },
-		],
+		paths: params,
 		fallback: false, // can also be true or 'blocking'
 	};
 }

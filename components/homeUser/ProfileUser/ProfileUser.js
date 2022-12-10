@@ -19,9 +19,13 @@ export default function ProfileUser(props) {
 
 	const [avatarPic, setAvatarPic] = useState();
 	const [profileUser, setProfileUser] = useState(fetchData);
-	const { username } = fetchData.user;
+
 	const [profilePosts, setProfilePosts] = useState();
 	const { data: session, status, loading } = useSession();
+
+	const { username } = fetchData?.user;
+
+	console.log(username, fetchData);
 
 	useEffect(() => {
 		if (session) {
