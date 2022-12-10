@@ -148,7 +148,8 @@ export async function getStaticProps(context) {
 }
 
 export async function getStaticPaths() {
-	const data = await getAllUsers();
+	const res = await getAllUsers();
+	const data = JSON.parse(res);
 
 	const profiles = data.map((profile) => profile.username);
 	const params = profiles.map((profile) => ({ params: { profile } }));
