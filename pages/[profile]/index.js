@@ -136,29 +136,13 @@ export default function Profile({ data }) {
 export async function getStaticProps(context) {
 	const params = context.params.profile;
 	// let data;
-
-	// try {
-	// 	const res = await fetch(`${process.env.DEV}/api/profile/ProfileData`, {
-	// 		method: 'POST',
-	// 		body: params,
-	// 		'Content-Type': 'application/json',
-	// 	});
-	// 	data = await res.json();
-	// } catch (e) {
-	// 	console.log(e.message);
-	// }
-	// // const { name } = data.user;
-	// // if (!name) {
-	// // 	return <h1>DATA NOT HERE</h1>;
-	// // }
-
 	const data = await getUser(params);
 	console.log(data);
 	// const data = JSON.parse(dataAll);
 
 	return {
 		props: {
-			data,
+			data: JSON.parse(data),
 		},
 	};
 }
