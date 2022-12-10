@@ -15,17 +15,25 @@ export default function ProfileUser(props) {
 		isFollowing,
 		setUpdateFollowing,
 		updateFollowing,
+
+		userNotFound,
 	} = props;
 
 	const [avatarPic, setAvatarPic] = useState();
-	const [profileUser, setProfileUser] = useState(fetchData);
+	// const [profileUser, setProfileUser] = useState({
+	// 	fetchData,
+	// });
 
 	const [profilePosts, setProfilePosts] = useState();
+	const [defaultAvatar, setDefaultAvatar] = useState(
+		'https://www.gravatar.com/avatar/00000000000000000000000000000000'
+	);
 	const { data: session, status, loading } = useSession();
 
-	const { username } = fetchData?.user;
+	let username;
 
-	console.log(username, fetchData);
+	const router = useRouter();
+	username = router.query.profile;
 
 	useEffect(() => {
 		if (session) {
@@ -46,22 +54,6 @@ export default function ProfileUser(props) {
 
 		fetchUserPosts();
 	}, [username]);
-
-	useEffect(() => {
-		async function fetchUserData() {
-			const res = await fetch('/api/profile/ProfileData', {
-				method: 'POST',
-				body: username,
-			});
-
-			const data = await res.json();
-			setProfileUser(data);
-		}
-
-		fetchUserData();
-	}, [username]);
-
-	console.log(profileUser);
 
 	async function handleFollow(e) {
 		const data = {
@@ -97,7 +89,7 @@ export default function ProfileUser(props) {
 		console.log(dataRes);
 	}
 
-	if (!profileUser) {
+	if (!fetchData && !userNotFound) {
 		return (
 			<div className={styles['profile-container']}>
 				<p>Loading</p>
@@ -113,7 +105,9 @@ export default function ProfileUser(props) {
 				</a>
 				<div className={styles['profile-user']}>
 					<h3>
-						{profileUser?.user?.name} {profileUser?.user?.surname}
+						{!userNotFound
+							? fetchData?.user?.name + ' ' + fetchData?.user?.surname
+							: 'User doesnt exist'}
 					</h3>
 					<span>604 Tweets</span>
 				</div>
@@ -128,14 +122,16 @@ export default function ProfileUser(props) {
 				<div className={styles['profile-picture']}>
 					<div className={styles.picture}>
 						<Image
-							src={`https://${profileUser?.user?.avatar}`}
+							src={
+								fetchData ? `https://${fetchData?.user?.avatar}` : defaultAvatar
+							}
 							className={styles['profile-image']}
 							width={'170'}
 							height={100}
 						/>
 					</div>
 					{isOwner ? <button className={styles.btn}>Edit Profile</button> : ''}
-					{!isOwner && !isFollowing && !updateFollowing ? (
+					{!isOwner && !isFollowing && !updateFollowing && !userNotFound ? (
 						<button onClick={handleFollow} className={styles.btn}>
 							Follow
 						</button>
@@ -158,9 +154,11 @@ export default function ProfileUser(props) {
 			<div className={styles['profile-desc']}>
 				<div className={styles['profile-names']}>
 					<h3>
-						{profileUser?.user?.name} {profileUser?.user?.surname}
+						{!userNotFound
+							? fetchData?.user?.name + ' ' + fetchData?.user?.surname
+							: 'User doesnt exist'}
 					</h3>
-					<span>@{profileUser?.user?.username}</span>
+					<span>@{fetchData?.user?.username}</span>
 				</div>
 				<div className={styles.location}>
 					<div className={styles['location-country']}>
@@ -205,6 +203,13 @@ export default function ProfileUser(props) {
 					</a>
 				</div>
 			</div>
+			{userNotFound ? (
+				<div className={styles2.tweets}>
+					<h1 className={styles['profile-names']}>User doesnt exist</h1>
+				</div>
+			) : (
+				''
+			)}
 			<div className={styles2.tweets}>
 				{!profilePosts
 					? 'This user has no posts'
@@ -212,7 +217,11 @@ export default function ProfileUser(props) {
 							<div className={styles2['user-tweet']}>
 								<a href="">
 									<Image
-										src={`https://${profileUser?.user?.avatar}`}
+										src={
+											fetchData
+												? `https://${fetchData?.user?.avatar}`
+												: defaultAvatar
+										}
 										alt=""
 										width={45}
 										height={45}
@@ -223,11 +232,11 @@ export default function ProfileUser(props) {
 									<div className={styles2['name-username']}>
 										<a href="" className={styles2.fullname}>
 											<span>
-												{profileUser?.user?.name} {profileUser?.user?.surname}
+												{fetchData?.user?.name} {fetchData?.user?.surname}
 											</span>
 										</a>
 										<a href="" className={styles2.username}>
-											<span>@{profileUser?.user?.username}</span>
+											<span>@{fetchData?.user?.username}</span>
 										</a>
 									</div>
 									<div className={styles2['tweet-info']}>

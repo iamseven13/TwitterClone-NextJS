@@ -3,31 +3,24 @@ import { useSession, getSession } from 'next-auth/react';
 import SideBarLoggedIn from '../../components/homeUser/SideBarLoggedIn';
 import ThirdPartLoggedIn from '../../components/homeUser/ThirdPartLoggedIn';
 import ProfileUser from '../../components/homeUser/ProfileUser/ProfileUser';
-
 import styles from '../../styles/Home.module.css';
 import { useEffect, useState } from 'react';
 import SideBar from '../../components/homeguest/SideBar';
-import { useRouter } from 'next/router';
 import ThirdPart from '../../components/homeguest/ThirdPart';
-import getAllUsers from '../../lib/getAllUsers';
-import getUser from '../../lib/getuser';
 
-export default function Profile({ data }) {
+export default function Profile() {
 	const [path, setPath] = useState();
 	const [loggedInUsername, setLoggedInUsername] = useState();
 	const [isOwner, setIsOwner] = useState(false);
 	const [isFollowing, setIsFollowing] = useState(false);
-	const [fetchData, setFetchedData] = useState(data);
+	const [fetchData, setFetchedData] = useState();
 	const [updateFollowing, setUpdateFollowing] = useState();
 	const { data: session, status } = useSession();
+	const [userNotFound, setUserNotFound] = useState(false);
 
 	const [isUserLoggedIn, setIsUserLoggedIn] = useState(Boolean(session));
 
-	console.log(data);
-
 	let username;
-
-	const { user } = fetchData;
 
 	useEffect(() => {
 		const loggedIn = localStorage.getItem('loggedInUsername');
@@ -41,26 +34,26 @@ export default function Profile({ data }) {
 		}
 	}, [path, fetchData]);
 
-	const followRequest = {
-		loggedInUsername,
-		followProfile: user?.username,
-	};
+	// const followRequest = {
+	// 	loggedInUsername,
+	// 	followProfile: user?.username,
+	// };
 
-	useEffect(() => {
-		async function isFollowing() {
-			try {
-				const res = await fetch('/api/follow/isfollowing', {
-					method: 'POST',
-					body: JSON.stringify(followRequest),
-				});
-				const data = await res.json();
-				setIsFollowing(data.isFollowing);
-			} catch (e) {
-				console.log(e.message);
-			}
-		}
-		isFollowing();
-	}, [fetchData]);
+	// useEffect(() => {
+	// 	async function isFollowing() {
+	// 		try {
+	// 			const res = await fetch('/api/follow/isfollowing', {
+	// 				method: 'POST',
+	// 				body: JSON.stringify(followRequest),
+	// 			});
+	// 			const data = await res.json();
+	// 			setIsFollowing(data.isFollowing);
+	// 		} catch (e) {
+	// 			console.log(e.message);
+	// 		}
+	// 	}
+	// 	isFollowing();
+	// }, [fetchData]);
 
 	useEffect(() => {
 		const path = window.location.pathname.split('/')[1];
@@ -76,6 +69,7 @@ export default function Profile({ data }) {
 	useEffect(() => {
 		async function fetchData() {
 			const path = window.location.pathname.split('/')[1];
+			console.log(path);
 
 			if (path) {
 				try {
@@ -85,11 +79,12 @@ export default function Profile({ data }) {
 						'Content-Type': 'application/json',
 					});
 					const data = await res.json();
-
-					setFetchedData(data);
-
-					if (data.error) {
-						console.log(data.error);
+					console.log(data);
+					if (data.user) {
+						setFetchedData(data);
+					} else {
+						setUserNotFound(true);
+						console.log('user doesnt exist');
 					}
 				} catch (e) {
 					console.log(e.message);
@@ -117,6 +112,7 @@ export default function Profile({ data }) {
 				<ProfileUser
 					fetchData={fetchData}
 					isOwner={isOwner}
+					userNotFound={userNotFound}
 					loggedInUsername={loggedInUsername}
 					isFollowing={isFollowing}
 					setUpdateFollowing={setUpdateFollowing}
@@ -133,29 +129,29 @@ export default function Profile({ data }) {
 	);
 }
 
-export async function getStaticProps(context) {
-	const params = context.params.profile;
-	// let data;
-	const data = await getUser(params);
-	console.log(data);
-	// const data = JSON.parse(dataAll);
+// export async function getStaticProps(context) {
+// 	const params = context.params.profile;
+// 	// let data;
+// 	const data = await getUser(params);
+// 	console.log(data);
+// 	// const data = JSON.parse(dataAll);
 
-	return {
-		props: {
-			data: JSON.parse(data),
-		},
-	};
-}
+// 	return {
+// 		props: {
+// 			data: JSON.parse(data),
+// 		},
+// 	};
+// }
 
-export async function getStaticPaths() {
-	const res = await getAllUsers();
-	const data = JSON.parse(res);
+// export async function getStaticPaths() {
+// 	const res = await getAllUsers();
+// 	const data = JSON.parse(res);
 
-	const profiles = data.map((profile) => profile.username);
-	const params = profiles.map((profile) => ({ params: { profile } }));
-	console.log(params);
-	return {
-		paths: params,
-		fallback: false, // can also be true or 'blocking'
-	};
-}
+// 	const profiles = data.map((profile) => profile.username);
+// 	const params = profiles.map((profile) => ({ params: { profile } }));
+// 	console.log(params);
+// 	return {
+// 		paths: params,
+// 		fallback: false, // can also be true or 'blocking'
+// 	};
+// }
