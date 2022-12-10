@@ -128,6 +128,7 @@ export default function ProfileUser(props) {
 				<div className={styles['profile-picture']}>
 					<div className={styles.picture}>
 						<Image
+							src={`https://${profileUser?.user?.avatar}`}
 							className={styles['profile-image']}
 							width={'170'}
 							height={100}
@@ -211,6 +212,7 @@ export default function ProfileUser(props) {
 							<div className={styles2['user-tweet']}>
 								<a href="">
 									<Image
+										src={`https://${profileUser?.user?.avatar}`}
 										alt=""
 										width={45}
 										height={45}
