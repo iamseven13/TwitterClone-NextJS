@@ -1,6 +1,23 @@
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
 export default function ThirdPartLoggedIn({ styles }) {
+	const [users, setUsers] = useState([]);
+
+	useEffect(() => {
+		async function fetchUsers() {
+			const res = await fetch('/api/users/getallusers', {
+				method: 'GET',
+			});
+			const data = await res.json();
+
+			const slicedArr = data.slice(2, 5);
+
+			setUsers(slicedArr);
+		}
+		fetchUsers();
+	}, []);
+
 	return (
 		<div className={styles.signup}>
 			<div className={styles['right-tabs']}>
@@ -37,42 +54,26 @@ export default function ThirdPartLoggedIn({ styles }) {
 			<div className={styles['who-toFollow']}>
 				<span>Who to Follow</span>
 				<div className={styles.users}>
-					<div className={styles.user}>
-						<div className={styles['user-firstPart']}>
-							<Image
-								src=""
-								alt=""
-								width={40}
-								height={40}
-								objectFit="cover"
-								className={styles['who-toFollow-pics']}
-							/>
+					{users.map((user) => (
+						<div className={styles.user}>
+							<div className={styles['user-firstPart']}>
+								<Image
+									src={`https://${user.avatar}`}
+									alt=""
+									width={40}
+									height={40}
+									objectFit="cover"
+									className={styles['who-toFollow-pics']}
+								/>
 
-							<a href="/jimmyfallon" className={styles['user-info']}>
-								<span>Jimmy Fallon</span>
-								<span>@jimmyfallon</span>
-							</a>
+								<a href={`/${user.username}`} className={styles['user-info']}>
+									<span>{user.name + ' ' + user.surname}</span>
+									<span>{user.username}</span>
+								</a>
+							</div>
+							<button className={styles.disabledBtn}>Follow</button>
 						</div>
-						<button>Follow</button>
-					</div>
-
-					<div className={styles.user}>
-						<div className={styles['user-firstPart']}>
-							<Image
-								src=""
-								alt=""
-								width={40}
-								height={40}
-								className={styles['who-toFollow-pics']}
-							/>
-
-							<a href="/jimmyfallon" className={styles['user-info']}>
-								<span>Jimmy Fallon</span>
-								<span>@jimmyfallon</span>
-							</a>
-						</div>
-						<button>Follow</button>
-					</div>
+					))}
 				</div>
 			</div>
 		</div>

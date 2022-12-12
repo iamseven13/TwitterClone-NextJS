@@ -9,24 +9,33 @@ import SideBar from '../../../components/homeguest/SideBar';
 import { useRouter } from 'next/router';
 import ThirdPart from '../../../components/homeguest/ThirdPart';
 import Post from '../../../components/homeUser/Post/Post';
+import getPost from '../../../lib/getpost';
+import getAllPostIds from '../../../lib/getallpostsID';
+import Popup from '../../../components/homeguest/Modals/Popup';
 
 export default function PostID(props) {
+	const { post } = props;
+
 	const { data: session, status } = useSession();
 
-	const [isUserLoggedIn, setIsUserLoggedIn] = useState(Boolean(session));
+	const [isUserLoggedIn, setIsUserLoggedIn] = useState();
+
+	useEffect(() => {
+		setIsUserLoggedIn(Boolean(localStorage.getItem('loggedInUsername')));
+	}, []);
 
 	return (
 		<div className={styles.container}>
 			<main className={styles.main}>
-				{!isUserLoggedIn ? (
+				{isUserLoggedIn ? (
 					<SideBarLoggedIn styles={styles} />
 				) : (
 					<SideBar styles={styles} />
 				)}
 
-				<Post />
+				<Post isUserLoggedIn={isUserLoggedIn} postSSG={post} />
 
-				{!isUserLoggedIn ? (
+				{isUserLoggedIn ? (
 					<ThirdPartLoggedIn styles={styles} />
 				) : (
 					<ThirdPart styles={styles} />
@@ -34,4 +43,24 @@ export default function PostID(props) {
 			</main>
 		</div>
 	);
+}
+
+export async function getStaticProps(context) {
+	const postId = context.params.id;
+	const post = await getPost(postId);
+
+	return {
+		props: { post },
+	};
+}
+
+export async function getStaticPaths() {
+	const allPosts = await getAllPostIds();
+	const ids = allPosts.map((post) => post._id);
+	const params = ids.map((id) => ({ params: { id: id } }));
+
+	return {
+		paths: params,
+		fallback: false,
+	};
 }

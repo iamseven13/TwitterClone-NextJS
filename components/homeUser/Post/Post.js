@@ -2,16 +2,14 @@ import styles from './Post.module.css';
 import { useRouter } from 'next/router';
 import { useEffect, useState, useRef } from 'react';
 import { useSession } from 'next-auth/react';
-export default function Post() {
+export default function Post(props) {
 	const router = useRouter();
 	const [post, setPost] = useState();
-	const [comments, setComments] = useState();
-	const [commentActionLoading, setCommentActionLoading] = useState(false);
+	const [comments, setComments] = useState(props?.postSSG.post?.comments);
 	const [startCommentRequestCount, setstartCommentRequestCount] =
 		useState(true);
-	const [stopCommentRequestCount, setstopCommentRequestCount] = useState(0);
 	const [loggedInAvatar, setLoggedInAvatar] = useState();
-
+	const [postSSG, setPostSSG] = useState(props.postSSG);
 	const inputAreaRef = useRef();
 
 	const session = useSession();
@@ -28,7 +26,7 @@ export default function Post() {
 				body: JSON.stringify({ postId }),
 			});
 			const data = await res.json();
-			setPost(data);
+			console.log(data);
 			setComments(data?.post?.comments);
 		}
 		fetchPost();
@@ -61,7 +59,7 @@ export default function Post() {
 		inputAreaRef.current.value = '';
 	}
 
-	if (!post) {
+	if (!postSSG) {
 		return (
 			<div className={styles['post-container']}>
 				<p>LOADING</p>
@@ -84,7 +82,7 @@ export default function Post() {
 				<div className={styles['user-tweet']}>
 					<a href="">
 						<img
-							src={`https://${post?.post?.avatar}`}
+							src={`https://${postSSG?.post?.avatar}`}
 							alt=""
 							width={35}
 							height={35}
@@ -93,76 +91,86 @@ export default function Post() {
 					</a>
 					<div className={styles['user-info']}>
 						<div className={styles['name-username']}>
-							<a href={`/${post?.post?.username}`} className={styles.fullname}>
+							<a
+								href={`/${postSSG?.post?.username}`}
+								className={styles.fullname}
+							>
 								<span>
-									{post?.post?.name} {post?.post?.surname}
+									{postSSG?.post?.name} {postSSG?.post?.surname}
 								</span>
 							</a>
-							<a href={`/${post?.post?.username}`} className={styles.username}>
-								<span>@{`${post?.post?.username}`}</span>
+							<a
+								href={`/${postSSG?.post?.username}`}
+								className={styles.username}
+							>
+								<span>@{`${postSSG?.post?.username}`}</span>
 							</a>
 						</div>
 						<div className={styles['tweet-info']}>
 							<a href="">
-								<p>{post?.post?.tweet}</p>
+								<p>{postSSG?.post?.tweet}</p>
 							</a>
 						</div>
 						<div className={styles.allIcons}>
 							<a className={styles.comments}>
 								<img src="/images/chat.svg" alt="" />
 
-								<span>{post?.post?.comments.length} </span>
+								<span>{postSSG?.post?.comments.length} </span>
 							</a>
 							<a className={styles.retweets}>
 								<img src="/images/retweet.svg" alt="" />
 
-								<span>{post?.post?.retweets.length}</span>
+								<span>{postSSG?.post?.retweets.length}</span>
 							</a>
 
 							<a className={styles.likes}>
 								<img src="/images/heart.svg" alt="" />
 
-								<span>{post?.post?.likes.length}</span>
+								<span>{postSSG?.post?.likes.length}</span>
 							</a>
 						</div>
 					</div>
 				</div>
 			</div>
 
-			<div className={styles['user-replying']}>
-				<div className={styles.border}>
-					<img src={`https://${loggedInAvatar}`} alt="" />
-					<div className={styles['empty-bottom']}></div>
-				</div>
-				<form>
-					<textarea
-						maxLength="250"
-						placeholder="Tweet your reply"
-						autoFocus
-						className={styles.textarea}
-						ref={inputAreaRef}
-					/>
-					<div className={styles.icons}>
-						<div className={styles.icons1}>
-							<a href="">
-								<img src="/images/explore.svg" alt="" />
-							</a>
-							<a href="">
-								<img src="/images/user.svg" alt="" />
-							</a>
-							<a href="">
-								<img src="/images/list.svg" alt="" />
-							</a>
-							<a href="">
-								<img src="/images/more.svg" alt="" />
-							</a>
-						</div>
-						<button onClick={handleReplyTweet} className={styles.btn}>
-							Tweet
-						</button>
+			{props.isUserLoggedIn ? (
+				<div className={styles['user-replying']}>
+					<div className={styles.border}>
+						<img src={`https://${loggedInAvatar}`} alt="" />
+						<div className={styles['empty-bottom']}></div>
 					</div>
-				</form>
-			</div>
+					<form>
+						<textarea
+							maxLength="250"
+							placeholder="Tweet your reply"
+							autoFocus
+							className={styles.textarea}
+							ref={inputAreaRef}
+						/>
+						<div className={styles.icons}>
+							<div className={styles.icons1}>
+								<a href="">
+									<img src="/images/explore.svg" alt="" />
+								</a>
+								<a href="">
+									<img src="/images/user.svg" alt="" />
+								</a>
+								<a href="">
+									<img src="/images/list.svg" alt="" />
+								</a>
+								<a href="">
+									<img src="/images/more.svg" alt="" />
+								</a>
+							</div>
+							<button onClick={handleReplyTweet} className={styles.btn}>
+								Tweet
+							</button>
+						</div>
+					</form>
+				</div>
+			) : (
+				''
+			)}
 
 			{comments?.map((comment, index) => (
 				<div key={index} className={styles.tweets + ' ' + styles.commenter}>

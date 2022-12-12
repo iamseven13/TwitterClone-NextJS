@@ -9,7 +9,7 @@ export default function RegisterForm(props) {
 	const emailInputRef = useRef();
 	const passwordInputRef = useRef();
 	const passwordInputRef2 = useRef();
-
+	let username;
 	const [isLogin, setIsLogin] = useState(false);
 
 	async function handleRegister(e) {
@@ -25,7 +25,7 @@ export default function RegisterForm(props) {
 			return res.json({ msg: 'password should match' });
 		}
 
-		const username = (enteredName + enteredSurname).toLowerCase().trim();
+		username = (enteredName + enteredSurname).toLowerCase().trim();
 
 		const clientData = {
 			name: enteredName,
@@ -44,6 +44,10 @@ export default function RegisterForm(props) {
 			});
 			const data = await res.json();
 			console.log(data);
+
+			if (data.msg) {
+				setIsLogin(true);
+			}
 		} catch (e) {
 			console.log(e.message);
 		}
@@ -62,6 +66,8 @@ export default function RegisterForm(props) {
 				email: enteredEmail,
 				password: enteredPassword,
 			});
+
+			localStorage.setItem('loggedInUsername', username);
 
 			if (!result.error) {
 				handleExitForm(e);
@@ -88,6 +94,9 @@ export default function RegisterForm(props) {
 						className={styles['form-container']}
 						onSubmit={isLogin ? handleLogin : handleRegister}
 					>
+						<span>DEMO</span>
+						<span>demo@demo.com</span>
+						<span>demo1234</span>
 						{!isLogin ? (
 							<>
 								<div className={styles['form-email']}>

@@ -95,3 +95,9 @@
 	margin-top: 0.2rem;
 	text-decoration: underline;
 }
+
+@media only screen and (max-width: 600px) {
+	.register-container {
+		width: 90%;
+	}
+}

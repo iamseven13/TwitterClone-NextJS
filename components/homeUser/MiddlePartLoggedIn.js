@@ -10,8 +10,6 @@ export default function MiddlePartLoggedIn({
 	setShowReplyForm,
 	setGatherDataFromPost,
 }) {
-	const [avatarPic, setAvatarPic] = useState();
-
 	const { data: session, status, loading } = useSession();
 	const [tweet, setTweet] = useState('');
 	const [submitTweet, setSubmitTweet] = useState(false);
@@ -41,27 +39,6 @@ export default function MiddlePartLoggedIn({
 			console.log(e.message);
 		}
 	}
-
-	useEffect(() => {
-		if (session) {
-			setAvatarPic(session.token.avatar);
-			const { token } = session;
-			setAvatarPic(token.avatar);
-		}
-
-		async function fetchAllTweets() {
-			try {
-				const res = await fetch('/api/tweets/getposts', {
-					method: 'GET',
-				});
-				const data = await res.json();
-				console.log(data);
-			} catch (e) {
-				console.log(e.message);
-			}
-		}
-		fetchAllTweets();
-	}, []);
 
 	console.log(session);
 

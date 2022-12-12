@@ -1,11 +1,9 @@
 import styles from './Reply.module.css';
 import { useRef, useState } from 'react';
+import { useSession } from 'next-auth/react';
 
-export default function Reply({
-	setShowReplyForm,
-	gatherDataFromPost,
-	session,
-}) {
+export default function Reply({ setShowReplyForm, gatherDataFromPost }) {
+	const [session, setSession] = useState(useSession());
 	const replyTextRef = useRef();
 
 	async function handleReplyTweet(e) {
@@ -26,6 +24,12 @@ export default function Reply({
 
 		const data = await res.json();
 	}
+
+	if (!session) {
+		return <h1>loading</h1>;
+	}
+
+	console.log(session);
 	return (
 		<div className={styles.container}>
 			<div className={styles.form}>
@@ -60,7 +64,7 @@ export default function Reply({
 				</div>
 				<div className={styles['user-replying']}>
 					<div className={styles.border}>
-						<img src={`https://${session.token.avatar}`} alt="" />
+						<img src={`https://${session.data?.token?.avatar}`} alt="" />
 						<div className={styles['empty-bottom']}></div>
 					</div>
 					<form>

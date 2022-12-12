@@ -15,7 +15,7 @@ export default async function handler(req, res) {
 			);
 
 			const { name, username, avatar, surname } = user;
-			console.log(username);
+
 			if (user) {
 				const newPost = new Post({
 					tweet: data.tweet,
@@ -27,7 +27,6 @@ export default async function handler(req, res) {
 				});
 
 				const post = await newPost.save();
-				console.log(post);
 				return res.json(post);
 			} else {
 				return res.json('there was a problem');

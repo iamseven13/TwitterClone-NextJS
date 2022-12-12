@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 import ThirdPart from '../components/homeguest/ThirdPart';
 import MiddlePart from '../components/homeguest/MiddlePart';
 import SideBar from '../components/homeguest/SideBar';
+import Popup from '../components/homeguest/Modals/Popup';
 
 export default function Home(props) {
 	const [showRegisterForm, setRegisterForm] = useState(false);
@@ -25,28 +26,31 @@ export default function Home(props) {
 	}, []);
 
 	return (
-		<div className={styles.container}>
-			<Head>
-				<title>Twitter Clone</title>
-				<meta
-					name="description"
-					content="Twitter but just better with free speech."
-				/>
-				<link rel="icon" href="/favicon.ico" />
-			</Head>
+		<>
+			<div className={styles.container}>
+				<Head>
+					<title>Twitter Clone</title>
+					<meta
+						name="description"
+						content="Twitter but just better with free speech."
+					/>
+					<link rel="icon" href="/favicon.ico" />
+				</Head>
 
-			<main className={styles.main}>
-				<SideBar styles={styles} />
+				<main className={styles.main}>
+					<SideBar styles={styles} />
 
-				<MiddlePart styles={styles} />
+					<MiddlePart styles={styles} />
 
-				<ThirdPart styles={styles} setRegisterForm={setRegisterForm} />
-			</main>
-			{showRegisterForm ? (
-				<RegisterForm setRegisterForm={setRegisterForm} />
-			) : (
-				''
-			)}
-		</div>
+					<ThirdPart styles={styles} setRegisterForm={setRegisterForm} />
+				</main>
+				{showRegisterForm ? (
+					<RegisterForm setRegisterForm={setRegisterForm} />
+				) : (
+					''
+				)}
+			</div>
+			<Popup setRegisterForm={setRegisterForm} />
+		</>
 	);
 }

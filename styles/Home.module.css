@@ -1,3 +1,7 @@
+.body {
+	overflow-y: hidden;
+}
+
 .container {
 	width: 67vw;
 	margin: auto;
@@ -200,6 +204,7 @@
 	padding: 2rem;
 	font-size: 1.6rem;
 	color: white;
+	width: 300px;
 }
 
 .trendList-m0 {
@@ -213,6 +218,7 @@
 	padding: 2rem;
 	font-size: 1.6rem;
 	color: white;
+	width: 300px;
 }
 
 .users {
@@ -265,12 +271,95 @@
 	display: flex;
 }
 
+/* Logout Btn*/
+
+.logout {
+	padding: 0.1rem 0.5rem;
+	display: none;
+}
+
 /* Disabled Button*/
 .disabledBtn {
-	cursor: not-allowed;
+	cursor: not-allowed !important;
 }
 
 /* MOBILE*/
 
-@media only screen and (max-width: 780px) {
+/* @media only screen and (max-width: 1371px) {
+	.container {
+		width: 100vw;
+	}
+	.middle {
+		flex: 1.5;
+	}
+
+	.signup {
+		flex: 1;
+	}
+} */
+
+@media only screen and (max-width: 1107px) {
+	.container {
+		width: 100vw;
+	}
+	.navbar {
+		flex: 0.2;
+		max-width: none;
+	}
+	.middle {
+		flex: 1.5;
+	}
+
+	.signup {
+		max-width: none;
+		flex: 1;
+	}
+}
+
+@media only screen and (max-width: 870px) {
+	.signup-container {
+		padding: 0.5rem;
+	}
+	.signup-btn {
+		width: 100%;
+	}
+	.signup-btn button {
+		width: 100%;
+	}
+}
+
+@media only screen and (max-width: 700px) {
+	.signup-container {
+		font-size: 1.6rem;
+	}
+}
+
+@media only screen and (max-width: 690px) {
+	.main {
+		padding-top: 0rem;
+	}
+	.signup {
+		display: none;
+	}
+	.nav .aLinks {
+		display: none;
+	}
+	.navbar {
+		padding-left: 1rem;
+	}
+	.container {
+		overflow-y: scroll;
+	}
+
+	.navbar a img {
+		margin-top: 1.5rem;
+	}
+
+	.sidebar-btn-logout {
+		display: none;
+	}
+	.logout {
+		display: block;
+		cursor: pointer;
+	}
 }

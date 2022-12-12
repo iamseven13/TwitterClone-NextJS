@@ -18,9 +18,12 @@ export default function Profile() {
 	const { data: session, status } = useSession();
 	const [userNotFound, setUserNotFound] = useState(false);
 
-	const [isUserLoggedIn, setIsUserLoggedIn] = useState(Boolean(session));
+	const [isUserLoggedIn, setIsUserLoggedIn] = useState();
 
 	let username;
+
+	console.log(isUserLoggedIn);
+	console.log(isOwner);
 
 	useEffect(() => {
 		const loggedIn = localStorage.getItem('loggedInUsername');
@@ -34,26 +37,26 @@ export default function Profile() {
 		}
 	}, [path, fetchData]);
 
-	// const followRequest = {
-	// 	loggedInUsername,
-	// 	followProfile: user?.username,
-	// };
+	const followRequest = {
+		loggedInUsername,
+		followProfile: fetchData?.user?.username,
+	};
 
-	// useEffect(() => {
-	// 	async function isFollowing() {
-	// 		try {
-	// 			const res = await fetch('/api/follow/isfollowing', {
-	// 				method: 'POST',
-	// 				body: JSON.stringify(followRequest),
-	// 			});
-	// 			const data = await res.json();
-	// 			setIsFollowing(data.isFollowing);
-	// 		} catch (e) {
-	// 			console.log(e.message);
-	// 		}
-	// 	}
-	// 	isFollowing();
-	// }, [fetchData]);
+	useEffect(() => {
+		async function isFollowing() {
+			try {
+				const res = await fetch('/api/follow/isfollowing', {
+					method: 'POST',
+					body: JSON.stringify(followRequest),
+				});
+				const data = await res.json();
+				setIsFollowing(data.isFollowing);
+			} catch (e) {
+				console.log(e.message);
+			}
+		}
+		isFollowing();
+	}, [fetchData]);
 
 	useEffect(() => {
 		const path = window.location.pathname.split('/')[1];
@@ -64,6 +67,10 @@ export default function Profile() {
 		} else {
 			setIsUserLoggedIn(false);
 		}
+	}, [path]);
+
+	useEffect(() => {
+		setIsUserLoggedIn(Boolean(localStorage.getItem('loggedInUsername')));
 	}, [path]);
 
 	useEffect(() => {
@@ -99,7 +106,7 @@ export default function Profile() {
 	return (
 		<div className={styles.container}>
 			<main className={styles.main}>
-				{!isUserLoggedIn ? (
+				{isUserLoggedIn ? (
 					<SideBarLoggedIn
 						styles={styles}
 						user={username}
@@ -119,7 +126,7 @@ export default function Profile() {
 					updateFollowing={updateFollowing}
 				/>
 
-				{!isUserLoggedIn ? (
+				{isUserLoggedIn ? (
 					<ThirdPartLoggedIn styles={styles} />
 				) : (
 					<ThirdPart styles={styles} />

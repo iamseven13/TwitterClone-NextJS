@@ -2,6 +2,7 @@ import connectDB from '../../../config/db';
 import Post from '../../../models/Post';
 
 export default async function handler(req, res) {
+	await connectDB();
 	if (req.method === 'GET') {
 		try {
 			const posts = await Post.find().sort({ date: -1 });
