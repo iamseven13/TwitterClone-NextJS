@@ -245,16 +245,16 @@ export default function ProfileUser(props) {
 										</a>
 									</div>
 									<div className={styles2.icons}>
-										<a href="">
+										<a href="" className={styles.chat}>
 											<img src="./images/chat.svg" alt="" />
 										</a>
-										<a href="">
+										<a href="" className={styles.retweet}>
 											<img src="./images/retweet.svg" alt="" />
 										</a>
-										<a href="">
+										<a href="" className={styles.heart}>
 											<img src="./images/heart.svg" alt="" />
 										</a>
-										<a href="">
+										<a href="" className={styles.download}>
 											<img src="./images/download.svg" alt="" />
 										</a>
 									</div>

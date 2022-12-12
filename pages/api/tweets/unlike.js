@@ -18,7 +18,7 @@ export default async function handler(req, res) {
 				const removeIdx = post.likes
 					.map((like) => like.user.toString())
 					.indexOf(data.userId);
-				console.log(removeIdx);
+
 				post.likes.splice(removeIdx, 1);
 
 				await post.save();

@@ -9,7 +9,7 @@ export default function SideBarLoggedIn({ styles, user, setIsUserLoggedIn }) {
 
 		localStorage.removeItem('loggedInUsername');
 		localStorage.removeItem('loggedInUserId');
-		localStorage.removeIteme('loggedInAvatar');
+		localStorage.removeItem('loggedInAvatar');
 	}
 
 	let username;
@@ -34,7 +34,7 @@ export default function SideBarLoggedIn({ styles, user, setIsUserLoggedIn }) {
 						<a className={styles.navlinks} href="/home">
 							{' '}
 							<img src="/images/home.svg" alt="" />
-							Home
+							<span className={styles.aLinks}>Home</span>
 						</a>
 					</li>
 
@@ -42,7 +42,7 @@ export default function SideBarLoggedIn({ styles, user, setIsUserLoggedIn }) {
 						<a className={styles.navlinks + ' ' + styles.disabledBtn}>
 							{' '}
 							<img src="/images/explore.svg" alt="" />
-							Explore
+							<span className={styles.aLinks}>Explore</span>
 						</a>
 					</li>
 
@@ -50,46 +50,49 @@ export default function SideBarLoggedIn({ styles, user, setIsUserLoggedIn }) {
 						<a className={styles.navlinks + ' ' + styles.disabledBtn}>
 							{' '}
 							<img src="/images/bell.svg" alt="" />
-							Notifications
+							<span className={styles.aLinks}>Notifications</span>
 						</a>
 					</li>
 					<li>
 						<a className={styles.navlinks + ' ' + styles.disabledBtn}>
 							{' '}
 							<img src="/images/message.svg" alt="" />
-							Messages
+							<span className={styles.aLinks}>Messages</span>
 						</a>
 					</li>
 					<li>
 						<a className={styles.navlinks + ' ' + styles.disabledBtn}>
 							{' '}
 							<img src="/images/bookmark.svg" alt="" />
-							Bookmarks
+							<span className={styles.aLinks}>Bookmarks</span>
 						</a>
 					</li>
 					<li>
 						<a className={styles.navlinks + ' ' + styles.disabledBtn}>
 							{' '}
 							<img src="/images/list.svg" alt="" />
-							Lists
+							<span className={styles.aLinks}>Lists</span>
 						</a>
 					</li>
 					<li>
 						<a className={styles.navlinks} href={`/${username}`}>
 							{' '}
 							<img src="/images/user.svg" alt="" />
-							Profile
+							<span className={styles.aLinks}>Profile</span>
 						</a>
 					</li>
 					<li>
 						<a className={styles.navlinks + ' ' + styles.disabledBtn}>
 							{' '}
 							<img src="/images/more.svg" alt="" />
-							More
+							<span className={styles.aLinks}>More</span>
 						</a>
 					</li>
 				</ul>
 			</nav>
+			<a onClick={handleLogout} className={styles.logout}>
+				<img src="/images/logout.svg" alt="" />
+			</a>
 			<button className={styles['sidebar-btn-logout']} onClick={handleLogout}>
 				Logout
 			</button>

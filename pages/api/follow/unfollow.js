@@ -5,7 +5,7 @@ import User from '../../../models/User';
 export default async function handler(req, res) {
 	if (req.method === 'POST') {
 		const data = JSON.parse(req.body);
-		console.log(data.followingUsername);
+
 		// const dataInfo = {
 		//     follower: data.s
 		// }

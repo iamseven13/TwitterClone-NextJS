@@ -10,7 +10,7 @@ export default function SideBar({ styles }) {
 						<a className={styles.navlinks} href="/explore">
 							{' '}
 							<img src="/images/explore.svg" alt="" />
-							Explore
+							<span className={styles.aLinks}>Explore</span>
 						</a>
 					</li>
 
@@ -18,7 +18,7 @@ export default function SideBar({ styles }) {
 						<a className={styles.navlinks} href="/explore">
 							{' '}
 							<img src="/images/settings.svg" alt="" />
-							Settings
+							<span className={styles.aLinks}>Settings</span>
 						</a>
 					</li>
 				</ul>

@@ -3,7 +3,6 @@ import connectDB from '../../../config/db';
 
 export default async function handler(req, res) {
 	if (req.method === 'POST') {
-		console.log(req.body);
 		const data = JSON.parse(req.body);
 		console.log(data);
 		await connectDB();
